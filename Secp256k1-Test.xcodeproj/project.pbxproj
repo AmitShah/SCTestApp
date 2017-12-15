@@ -1,0 +1,573 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3F2550341FE218D0007B3648 /* secp256k1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F2550331FE218D0007B3648 /* secp256k1.framework */; };
+		3F29B5871FE204C8004BEF48 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F29B5861FE204C8004BEF48 /* main.m */; };
+		3F29B58A1FE204C8004BEF48 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F29B5891FE204C8004BEF48 /* AppDelegate.m */; };
+		3F29B58D1FE204C8004BEF48 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F29B58C1FE204C8004BEF48 /* ViewController.m */; };
+		3F29B5901FE204C8004BEF48 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F29B58E1FE204C8004BEF48 /* Main.storyboard */; };
+		3F29B5931FE204C9004BEF48 /* Secp256k1_Test.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3F29B5911FE204C9004BEF48 /* Secp256k1_Test.xcdatamodeld */; };
+		3F29B5951FE204C9004BEF48 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F29B5941FE204C9004BEF48 /* Assets.xcassets */; };
+		3F29B5981FE204C9004BEF48 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F29B5961FE204C9004BEF48 /* LaunchScreen.storyboard */; };
+		3F29B5A31FE204C9004BEF48 /* Secp256k1_TestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F29B5A21FE204C9004BEF48 /* Secp256k1_TestTests.m */; };
+		3F29B5AE1FE204C9004BEF48 /* Secp256k1_TestUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F29B5AD1FE204C9004BEF48 /* Secp256k1_TestUITests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3F29B59F1FE204C9004BEF48 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3F29B57A1FE204C7004BEF48 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3F29B5811FE204C8004BEF48;
+			remoteInfo = "Secp256k1-Test";
+		};
+		3F29B5AA1FE204C9004BEF48 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3F29B57A1FE204C7004BEF48 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3F29B5811FE204C8004BEF48;
+			remoteInfo = "Secp256k1-Test";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		3F2550331FE218D0007B3648 /* secp256k1.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = secp256k1.framework; path = "../../../Downloads/ios-secp256k1/framework/secp256k1.framework"; sourceTree = "<group>"; };
+		3F29B5821FE204C8004BEF48 /* Secp256k1-Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Secp256k1-Test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F29B5861FE204C8004BEF48 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		3F29B5881FE204C8004BEF48 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		3F29B5891FE204C8004BEF48 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		3F29B58B1FE204C8004BEF48 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		3F29B58C1FE204C8004BEF48 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		3F29B58F1FE204C8004BEF48 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		3F29B5921FE204C9004BEF48 /* Secp256k1_Test.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Secp256k1_Test.xcdatamodel; sourceTree = "<group>"; };
+		3F29B5941FE204C9004BEF48 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3F29B5971FE204C9004BEF48 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		3F29B5991FE204C9004BEF48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3F29B59E1FE204C9004BEF48 /* Secp256k1-TestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Secp256k1-TestTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F29B5A21FE204C9004BEF48 /* Secp256k1_TestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Secp256k1_TestTests.m; sourceTree = "<group>"; };
+		3F29B5A41FE204C9004BEF48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3F29B5A91FE204C9004BEF48 /* Secp256k1-TestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Secp256k1-TestUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F29B5AD1FE204C9004BEF48 /* Secp256k1_TestUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Secp256k1_TestUITests.m; sourceTree = "<group>"; };
+		3F29B5AF1FE204C9004BEF48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3F29B57F1FE204C8004BEF48 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3F2550341FE218D0007B3648 /* secp256k1.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3F29B59B1FE204C9004BEF48 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3F29B5A61FE204C9004BEF48 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3F29B5791FE204C7004BEF48 = {
+			isa = PBXGroup;
+			children = (
+				3F29B5841FE204C8004BEF48 /* Secp256k1-Test */,
+				3F29B5A11FE204C9004BEF48 /* Secp256k1-TestTests */,
+				3F29B5AC1FE204C9004BEF48 /* Secp256k1-TestUITests */,
+				3F29B5831FE204C8004BEF48 /* Products */,
+				3F29B5BB1FE20502004BEF48 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		3F29B5831FE204C8004BEF48 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3F29B5821FE204C8004BEF48 /* Secp256k1-Test.app */,
+				3F29B59E1FE204C9004BEF48 /* Secp256k1-TestTests.xctest */,
+				3F29B5A91FE204C9004BEF48 /* Secp256k1-TestUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3F29B5841FE204C8004BEF48 /* Secp256k1-Test */ = {
+			isa = PBXGroup;
+			children = (
+				3F29B5881FE204C8004BEF48 /* AppDelegate.h */,
+				3F29B5891FE204C8004BEF48 /* AppDelegate.m */,
+				3F29B58B1FE204C8004BEF48 /* ViewController.h */,
+				3F29B58C1FE204C8004BEF48 /* ViewController.m */,
+				3F29B58E1FE204C8004BEF48 /* Main.storyboard */,
+				3F29B5941FE204C9004BEF48 /* Assets.xcassets */,
+				3F29B5961FE204C9004BEF48 /* LaunchScreen.storyboard */,
+				3F29B5991FE204C9004BEF48 /* Info.plist */,
+				3F29B5911FE204C9004BEF48 /* Secp256k1_Test.xcdatamodeld */,
+				3F29B5851FE204C8004BEF48 /* Supporting Files */,
+			);
+			path = "Secp256k1-Test";
+			sourceTree = "<group>";
+		};
+		3F29B5851FE204C8004BEF48 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				3F29B5861FE204C8004BEF48 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3F29B5A11FE204C9004BEF48 /* Secp256k1-TestTests */ = {
+			isa = PBXGroup;
+			children = (
+				3F29B5A21FE204C9004BEF48 /* Secp256k1_TestTests.m */,
+				3F29B5A41FE204C9004BEF48 /* Info.plist */,
+			);
+			path = "Secp256k1-TestTests";
+			sourceTree = "<group>";
+		};
+		3F29B5AC1FE204C9004BEF48 /* Secp256k1-TestUITests */ = {
+			isa = PBXGroup;
+			children = (
+				3F29B5AD1FE204C9004BEF48 /* Secp256k1_TestUITests.m */,
+				3F29B5AF1FE204C9004BEF48 /* Info.plist */,
+			);
+			path = "Secp256k1-TestUITests";
+			sourceTree = "<group>";
+		};
+		3F29B5BB1FE20502004BEF48 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3F2550331FE218D0007B3648 /* secp256k1.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3F29B5811FE204C8004BEF48 /* Secp256k1-Test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3F29B5B21FE204C9004BEF48 /* Build configuration list for PBXNativeTarget "Secp256k1-Test" */;
+			buildPhases = (
+				3F29B57E1FE204C8004BEF48 /* Sources */,
+				3F29B57F1FE204C8004BEF48 /* Frameworks */,
+				3F29B5801FE204C8004BEF48 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Secp256k1-Test";
+			productName = "Secp256k1-Test";
+			productReference = 3F29B5821FE204C8004BEF48 /* Secp256k1-Test.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3F29B59D1FE204C9004BEF48 /* Secp256k1-TestTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3F29B5B51FE204C9004BEF48 /* Build configuration list for PBXNativeTarget "Secp256k1-TestTests" */;
+			buildPhases = (
+				3F29B59A1FE204C9004BEF48 /* Sources */,
+				3F29B59B1FE204C9004BEF48 /* Frameworks */,
+				3F29B59C1FE204C9004BEF48 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3F29B5A01FE204C9004BEF48 /* PBXTargetDependency */,
+			);
+			name = "Secp256k1-TestTests";
+			productName = "Secp256k1-TestTests";
+			productReference = 3F29B59E1FE204C9004BEF48 /* Secp256k1-TestTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		3F29B5A81FE204C9004BEF48 /* Secp256k1-TestUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3F29B5B81FE204C9004BEF48 /* Build configuration list for PBXNativeTarget "Secp256k1-TestUITests" */;
+			buildPhases = (
+				3F29B5A51FE204C9004BEF48 /* Sources */,
+				3F29B5A61FE204C9004BEF48 /* Frameworks */,
+				3F29B5A71FE204C9004BEF48 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3F29B5AB1FE204C9004BEF48 /* PBXTargetDependency */,
+			);
+			name = "Secp256k1-TestUITests";
+			productName = "Secp256k1-TestUITests";
+			productReference = 3F29B5A91FE204C9004BEF48 /* Secp256k1-TestUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3F29B57A1FE204C7004BEF48 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = "Amit Shah";
+				TargetAttributes = {
+					3F29B5811FE204C8004BEF48 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = VV98CR2VYJ;
+						ProvisioningStyle = Automatic;
+					};
+					3F29B59D1FE204C9004BEF48 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = VV98CR2VYJ;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 3F29B5811FE204C8004BEF48;
+					};
+					3F29B5A81FE204C9004BEF48 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = VV98CR2VYJ;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 3F29B5811FE204C8004BEF48;
+					};
+				};
+			};
+			buildConfigurationList = 3F29B57D1FE204C7004BEF48 /* Build configuration list for PBXProject "Secp256k1-Test" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3F29B5791FE204C7004BEF48;
+			productRefGroup = 3F29B5831FE204C8004BEF48 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3F29B5811FE204C8004BEF48 /* Secp256k1-Test */,
+				3F29B59D1FE204C9004BEF48 /* Secp256k1-TestTests */,
+				3F29B5A81FE204C9004BEF48 /* Secp256k1-TestUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3F29B5801FE204C8004BEF48 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3F29B5981FE204C9004BEF48 /* LaunchScreen.storyboard in Resources */,
+				3F29B5951FE204C9004BEF48 /* Assets.xcassets in Resources */,
+				3F29B5901FE204C8004BEF48 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3F29B59C1FE204C9004BEF48 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3F29B5A71FE204C9004BEF48 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3F29B57E1FE204C8004BEF48 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3F29B58D1FE204C8004BEF48 /* ViewController.m in Sources */,
+				3F29B58A1FE204C8004BEF48 /* AppDelegate.m in Sources */,
+				3F29B5931FE204C9004BEF48 /* Secp256k1_Test.xcdatamodeld in Sources */,
+				3F29B5871FE204C8004BEF48 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3F29B59A1FE204C9004BEF48 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3F29B5A31FE204C9004BEF48 /* Secp256k1_TestTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3F29B5A51FE204C9004BEF48 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3F29B5AE1FE204C9004BEF48 /* Secp256k1_TestUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3F29B5A01FE204C9004BEF48 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3F29B5811FE204C8004BEF48 /* Secp256k1-Test */;
+			targetProxy = 3F29B59F1FE204C9004BEF48 /* PBXContainerItemProxy */;
+		};
+		3F29B5AB1FE204C9004BEF48 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3F29B5811FE204C8004BEF48 /* Secp256k1-Test */;
+			targetProxy = 3F29B5AA1FE204C9004BEF48 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		3F29B58E1FE204C8004BEF48 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3F29B58F1FE204C8004BEF48 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		3F29B5961FE204C9004BEF48 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3F29B5971FE204C9004BEF48 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3F29B5B01FE204C9004BEF48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		3F29B5B11FE204C9004BEF48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3F29B5B31FE204C9004BEF48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = VV98CR2VYJ;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "/Users/amitshah/Downloads/ios-secp256k1/framework/**";
+				"HEADER_SEARCH_PATHS[arch=*]" = "/Users/amitshah/Downloads/ios-secp256k1/src/secp256k1-1.0.0/**";
+				INFOPLIST_FILE = "Secp256k1-Test/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "crowdsparq.Secp256k1-Test";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		3F29B5B41FE204C9004BEF48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = VV98CR2VYJ;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = "Secp256k1-Test/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "crowdsparq.Secp256k1-Test";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		3F29B5B61FE204C9004BEF48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = VV98CR2VYJ;
+				INFOPLIST_FILE = "Secp256k1-TestTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "crowdsparq.Secp256k1-TestTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Secp256k1-Test.app/Secp256k1-Test";
+			};
+			name = Debug;
+		};
+		3F29B5B71FE204C9004BEF48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = VV98CR2VYJ;
+				INFOPLIST_FILE = "Secp256k1-TestTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "crowdsparq.Secp256k1-TestTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Secp256k1-Test.app/Secp256k1-Test";
+			};
+			name = Release;
+		};
+		3F29B5B91FE204C9004BEF48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = VV98CR2VYJ;
+				INFOPLIST_FILE = "Secp256k1-TestUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "crowdsparq.Secp256k1-TestUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = "Secp256k1-Test";
+			};
+			name = Debug;
+		};
+		3F29B5BA1FE204C9004BEF48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = VV98CR2VYJ;
+				INFOPLIST_FILE = "Secp256k1-TestUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "crowdsparq.Secp256k1-TestUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = "Secp256k1-Test";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3F29B57D1FE204C7004BEF48 /* Build configuration list for PBXProject "Secp256k1-Test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3F29B5B01FE204C9004BEF48 /* Debug */,
+				3F29B5B11FE204C9004BEF48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3F29B5B21FE204C9004BEF48 /* Build configuration list for PBXNativeTarget "Secp256k1-Test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3F29B5B31FE204C9004BEF48 /* Debug */,
+				3F29B5B41FE204C9004BEF48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3F29B5B51FE204C9004BEF48 /* Build configuration list for PBXNativeTarget "Secp256k1-TestTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3F29B5B61FE204C9004BEF48 /* Debug */,
+				3F29B5B71FE204C9004BEF48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3F29B5B81FE204C9004BEF48 /* Build configuration list for PBXNativeTarget "Secp256k1-TestUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3F29B5B91FE204C9004BEF48 /* Debug */,
+				3F29B5BA1FE204C9004BEF48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		3F29B5911FE204C9004BEF48 /* Secp256k1_Test.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				3F29B5921FE204C9004BEF48 /* Secp256k1_Test.xcdatamodel */,
+			);
+			currentVersion = 3F29B5921FE204C9004BEF48 /* Secp256k1_Test.xcdatamodel */;
+			path = Secp256k1_Test.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 3F29B57A1FE204C7004BEF48 /* Project object */;
+}
