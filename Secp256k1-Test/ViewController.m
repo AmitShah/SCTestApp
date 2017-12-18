@@ -132,6 +132,7 @@
                                   );
 
     //https://bitcoin.stackexchange.com/questions/3059/what-is-a-compressed-bitcoin-key
+    //https://brainwalletx.github.io/#generator to validate sec == public key
     NSString * compressed_pk =[NSString hexStringWithData:compressed_output ofLength:33];
     NSString * pk =[NSString hexStringWithData:output ofLength:65];
     
