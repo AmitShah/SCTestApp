@@ -60,7 +60,7 @@
 //    }
     
     static const char *inputs[8] = {
-        "", "abc", "message digest", "secure hash algorithm", "SHA256 is considered to be safe",
+        "hello", "abc", "message digest", "secure hash algorithm", "SHA256 is considered to be safe",
         "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq",
         "For this sample, this 63-byte string will be used as input data",
         "This is exactly 64 bytes long, not counting the terminating byte"
@@ -82,10 +82,13 @@
 //    sha3_256(hashResult, 32, (uint8_t *)inputs[0] , strlen(inputs[0]));
     
     keccack_256(hashResult, 32, (uint8_t *)inputs[0] , strlen(inputs[0]));
-                
+    //https://emn178.github.io/online-tools/keccak_256.html
+    //1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8
     NSString * hashed = [NSString hexStringWithData:hashResult ofLength:32];
     
-    
+    if( [hashed isEqualToString: @"1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8"]){
+        NSLog(@"%@ hash equals hello hashing from https://emn178.github.io/online-tools/keccak_256.html\r\n", hashed);
+    }
     
     
     //testing secp2561 library sha256 implementation (it matches)
