@@ -12,6 +12,7 @@
 #import <secp256k1_recovery.h>
 #import <util.h>
 #import <hash_impl.h>
+#import <keccak-tiny.h>
 
 @implementation NSString (Hex)
 
@@ -45,7 +46,6 @@
     size_t output_size = 65;
     unsigned char output[65];
     
-   
     
     secp256k1_ecdsa_signature signature;
     secp256k1_ecdsa_signature signatureFromDer;
@@ -60,7 +60,7 @@
 //    }
     
     static const char *inputs[8] = {
-        "hello world", "abc", "message digest", "secure hash algorithm", "SHA256 is considered to be safe",
+        "", "abc", "message digest", "secure hash algorithm", "SHA256 is considered to be safe",
         "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq",
         "For this sample, this 63-byte string will be used as input data",
         "This is exactly 64 bytes long, not counting the terminating byte"
@@ -75,7 +75,22 @@
         {0xf0, 0x8a, 0x78, 0xcb, 0xba, 0xee, 0x08, 0x2b, 0x05, 0x2a, 0xe0, 0x70, 0x8f, 0x32, 0xfa, 0x1e, 0x50, 0xc5, 0xc4, 0x21, 0xaa, 0x77, 0x2b, 0xa5, 0xdb, 0xb4, 0x06, 0xa2, 0xea, 0x6b, 0xe3, 0x42},
         {0xab, 0x64, 0xef, 0xf7, 0xe8, 0x8e, 0x2e, 0x46, 0x16, 0x5e, 0x29, 0xf2, 0xbc, 0xe4, 0x18, 0x26, 0xbd, 0x4c, 0x7b, 0x35, 0x52, 0xf6, 0xb3, 0x82, 0xa9, 0xe7, 0xd3, 0xaf, 0x47, 0xc2, 0x45, 0xf8}
     };
-     unsigned char out[32];
+    
+    
+    //Test keccak-tiny implementation
+    uint8_t hashResult[32];
+//    sha3_256(hashResult, 32, (uint8_t *)inputs[0] , strlen(inputs[0]));
+    
+    keccack_256(hashResult, 32, (uint8_t *)inputs[0] , strlen(inputs[0]));
+                
+    NSString * hashed = [NSString hexStringWithData:hashResult ofLength:32];
+    
+    
+    
+    
+    //testing secp2561 library sha256 implementation (it matches)
+    //https://emn178.github.io/online-tools/sha256.html
+    unsigned char out[32];
     int k = 0;
     secp256k1_sha256 hasher;
     secp256k1_sha256_initialize(&hasher);

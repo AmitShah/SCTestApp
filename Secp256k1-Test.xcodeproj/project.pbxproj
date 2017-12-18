@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3F2550341FE218D0007B3648 /* secp256k1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F2550331FE218D0007B3648 /* secp256k1.framework */; };
+		3F2550361FE3CB64007B3648 /* secp256k1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F2550351FE3CB64007B3648 /* secp256k1.framework */; };
+		3F2550381FE3CB71007B3648 /* keccak-tiny-unrolled.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F2550371FE3CB71007B3648 /* keccak-tiny-unrolled.o */; };
 		3F29B5871FE204C8004BEF48 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F29B5861FE204C8004BEF48 /* main.m */; };
 		3F29B58A1FE204C8004BEF48 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F29B5891FE204C8004BEF48 /* AppDelegate.m */; };
 		3F29B58D1FE204C8004BEF48 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F29B58C1FE204C8004BEF48 /* ViewController.m */; };
@@ -37,7 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3F2550331FE218D0007B3648 /* secp256k1.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = secp256k1.framework; path = "../../../Downloads/ios-secp256k1/framework/secp256k1.framework"; sourceTree = "<group>"; };
+		3F2550351FE3CB64007B3648 /* secp256k1.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = secp256k1.framework; path = "../ios-secp256k1/framework/secp256k1.framework"; sourceTree = "<group>"; };
+		3F2550371FE3CB71007B3648 /* keccak-tiny-unrolled.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = "keccak-tiny-unrolled.o"; path = "../keccak-tiny/keccak-tiny-unrolled.o"; sourceTree = "<group>"; };
 		3F29B5821FE204C8004BEF48 /* Secp256k1-Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Secp256k1-Test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F29B5861FE204C8004BEF48 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3F29B5881FE204C8004BEF48 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -62,7 +64,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F2550341FE218D0007B3648 /* secp256k1.framework in Frameworks */,
+				3F2550381FE3CB71007B3648 /* keccak-tiny-unrolled.o in Frameworks */,
+				3F2550361FE3CB64007B3648 /* secp256k1.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,7 +153,8 @@
 		3F29B5BB1FE20502004BEF48 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3F2550331FE218D0007B3648 /* secp256k1.framework */,
+				3F2550371FE3CB71007B3648 /* keccak-tiny-unrolled.o */,
+				3F2550351FE3CB64007B3648 /* secp256k1.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -443,8 +447,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = VV98CR2VYJ;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "/Users/amitshah/Downloads/ios-secp256k1/framework/**";
-				"HEADER_SEARCH_PATHS[arch=*]" = "/Users/amitshah/Downloads/ios-secp256k1/src/secp256k1-1.0.0/**";
+				FRAMEWORK_SEARCH_PATHS = "/Users/amitshah/Documents/iphone/ios-secp256k1/framework/**";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"/Users/amitshah/Documents/iphone/keccak-tiny/**",
+					"/Users/amitshah/Documents/iphone/ios-secp256k1/src/**",
+				);
 				INFOPLIST_FILE = "Secp256k1-Test/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "crowdsparq.Secp256k1-Test";
