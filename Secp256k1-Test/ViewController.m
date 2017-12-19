@@ -79,12 +79,26 @@
     
     //Test keccak-tiny implementation
     uint8_t hashResult[32];
-//    sha3_256(hashResult, 32, (uint8_t *)inputs[0] , strlen(inputs[0]));
     
-    keccack_256(hashResult, 32, (uint8_t *)inputs[0] , strlen(inputs[0]));
+    
+//    sha3_256(hashResult, 32, (uint8_t *)inputs[0] , strlen(inputs[0]));
+    //convert hello to hex then apply keccack, it works.
+    uint8_t vv[5] ={0x68,0x65,0x6c,0x6c,0x6f};
+    keccack_256(hashResult, 32, vv , 5);
+    
     //https://emn178.github.io/online-tools/keccak_256.html
     //1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8
     NSString * hashed = [NSString hexStringWithData:hashResult ofLength:32];
+    
+    if( [hashed isEqualToString: @"1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8"]){
+        NSLog(@"%@ hash equals hello hashing from https://emn178.github.io/online-tools/keccak_256.html\r\n", hashed);
+    }
+    
+    keccack_256(hashResult, 32, (uint8_t*)inputs[0] , strlen(inputs[0]));
+    
+    //https://emn178.github.io/online-tools/keccak_256.html
+    //1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8
+    hashed = [NSString hexStringWithData:hashResult ofLength:32];
     
     if( [hashed isEqualToString: @"1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8"]){
         NSLog(@"%@ hash equals hello hashing from https://emn178.github.io/online-tools/keccak_256.html\r\n", hashed);
@@ -109,8 +123,10 @@
     NSString * hs = [NSString hexStringWithData:sig ofLength:siglen];
     
     NSString * sec =[NSString hexStringWithData:key ofLength:32];
-   
-   
+    
+    NSLog(@"secret: %@---", [NSString hexStringWithData:key ofLength:32] );
+    NSLog(@"message hash:%@---", [NSString hexStringWithData:msg ofLength:32]);
+    NSLog(@"signature:%@---", hs);
     
     secp256k1_ecdsa_signature_parse_der(ctx, &signatureFromDer, sig, siglen);
     
@@ -134,7 +150,22 @@
     //https://bitcoin.stackexchange.com/questions/3059/what-is-a-compressed-bitcoin-key
     //https://brainwalletx.github.io/#generator to validate sec == public key
     NSString * compressed_pk =[NSString hexStringWithData:compressed_output ofLength:33];
+    
+//  Tested in testrpc, take the pk, drop the first byte as that is just a compression flag, run it through keccak_256, drop the first 24 chars, that is your ethereum public address!  web3.sha3("0x9d2727b8e69f0e77fbe15143b163661be815d1ca731be335d53388731a765e7dc55e015815d199104bf9ebe8b59917ac6f573035c0b895006e4aa455f7d9fa97",{encoding:'hex'})
     NSString * pk =[NSString hexStringWithData:output ofLength:65];
+    
+    //https://ethereum.stackexchange.com/questions/3542/how-are-ethereum-addresses-generated
+    //    Start with the public key (128 characters / 64 bytes)
+    //    Take the Keccak-256 hash of the public key. You should now have a string that is 64 characters / 32 bytes. (note: SHA3-256 eventually became the standard, but Ethereum uses Keccak)
+    //    Take the last 40 characters / 20 bytes of this public key (Keccak-256). Or, in other words, drop the first 24 characters / 12 bytes. These 40 characters / 20 bytes are the address. When prefixed with 0x it becomes 42 characters long.
+    
+    //TODO: everything has to be passed as hex data, not string, so convert hex string to NSData -> unsigned char
+    //https://stackoverflow.com/questions/3056757/how-to-convert-an-nsstring-to-hex-values
+    
+    uint8_t EthereumAddress[64];
+    uint8_t * substr = (uint8_t *)[[pk substringFromIndex:2] UTF8String];
+    keccack_256(EthereumAddress, 64,substr, 130);
+
     
     NSLog(@"return value of pub key = %d, key:%@, compressed_pk:%@, pk:%@", v,sec, compressed_pk,pk);
     
