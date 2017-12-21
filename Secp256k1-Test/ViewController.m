@@ -157,15 +157,18 @@
     //https://ethereum.stackexchange.com/questions/3542/how-are-ethereum-addresses-generated
     //    Start with the public key (128 characters / 64 bytes)
     //    Take the Keccak-256 hash of the public key. You should now have a string that is 64 characters / 32 bytes. (note: SHA3-256 eventually became the standard, but Ethereum uses Keccak)
-    //    Take the last 40 characters / 20 bytes of this public key (Keccak-256). Or, in other words, drop the first 24 characters / 12 bytes. These 40 characters / 20 bytes are the address. When prefixed with 0x it becomes 42 characters long.
-    
+    //    Take the last 40 characters / 20 bytes of this public key (Keccak-256). Or, in other words, drop the first 24 characters / 12 bytes. These 40 characters / 20 bytes are the address. When prefixed with 0x it becomes 42 characters long.    
     //TODO: everything has to be passed as hex data, not string, so convert hex string to NSData -> unsigned char
     //https://stackoverflow.com/questions/3056757/how-to-convert-an-nsstring-to-hex-values
     
-    uint8_t EthereumAddress[64];
-    uint8_t * substr = (uint8_t *)[[pk substringFromIndex:2] UTF8String];
-    keccack_256(EthereumAddress, 64,substr, 130);
-
+    uint8_t EthereumAddress[32];
+    uint8_t ss[64];
+    memcpy(ss, output+1,64);
+    keccack_256(EthereumAddress, 32,ss, 64);
+    //THIS IS CORRECT when referenced against:
+    //web3.sha3("0x"+ss_val,{encoding:"hex"})
+    NSLog(@"Ethereum address (remove first 24 characters):%@",[NSString hexStringWithData:EthereumAddress ofLength:32]);
+    
     
     NSLog(@"return value of pub key = %d, key:%@, compressed_pk:%@, pk:%@", v,sec, compressed_pk,pk);
     
