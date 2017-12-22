@@ -24,18 +24,49 @@
     return [NSString stringWithString:tmp];
 }
 
+- (NSData *)dataFromHexString {
+    
+    const char *chars = [self UTF8String];
+    int i = 0, len = self.length;
+    
+    NSMutableData *data = [NSMutableData dataWithCapacity:len / 2];
+    char byteChars[3] = {'\0','\0','\0'};
+    unsigned long wholeByte;
+    
+    while (i < len) {
+        byteChars[0] = chars[i++];
+        byteChars[1] = chars[i++];
+        wholeByte = strtoul(byteChars, NULL, 16);
+        [data appendBytes:&wholeByte length:1];
+    }
+    //unsigned char *bytePtr = (unsigned char *)[data bytes];
+    return data;
+}
+
+
 @end
 
 @interface ViewController ()
 
 @end
 
+//uncomment to test random key generation with kSecRandom
+//#define RANDOM_KEY
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     unsigned char key[32];
+#ifdef RANDOM_KEY
+    NSLog(@"generating random secret");
     int randInt = SecRandomCopyBytes(kSecRandomDefault, 32, key);
+#else
+    NSLog(@"copying secret");
+    memcpy(key,[@"8595f846b34acad9923b86e914a7bb991d44d6b7a9556d0aff5e3c7edb015261" dataFromHexString].bytes,
+           32);
+#endif
+    
+   
     secp256k1_context * ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
     int i;
     unsigned char msg[32];
@@ -115,7 +146,7 @@
     secp256k1_sha256_finalize(&hasher, out);
     int cmp = memcmp(out, outputs[k], 32);
     
-    secp256k1_ecdsa_sign(ctx, &signature, msg, key, NULL, NULL);
+    secp256k1_ecdsa_sign(ctx, &signature, hashResult, key, NULL, NULL);
     secp256k1_ecdsa_signature_serialize_der(ctx, sig, &siglen, &signature);
     
     //HS - https://bitcoin.stackexchange.com/questions/2376/ecdsa-r-s-encoding-as-a-signature
@@ -126,7 +157,8 @@
     
     NSLog(@"secret: %@---", [NSString hexStringWithData:key ofLength:32] );
     NSLog(@"message hash:%@---", [NSString hexStringWithData:msg ofLength:32]);
-    NSLog(@"signature:%@---", hs);
+    NSLog(@"signature:%@---",[NSString hexStringWithData:signature.data ofLength:64]);
+    NSLog(@"DER signature:%@---", hs);
     
     secp256k1_ecdsa_signature_parse_der(ctx, &signatureFromDer, sig, siglen);
     
@@ -157,7 +189,7 @@
     //https://ethereum.stackexchange.com/questions/3542/how-are-ethereum-addresses-generated
     //    Start with the public key (128 characters / 64 bytes)
     //    Take the Keccak-256 hash of the public key. You should now have a string that is 64 characters / 32 bytes. (note: SHA3-256 eventually became the standard, but Ethereum uses Keccak)
-    //    Take the last 40 characters / 20 bytes of this public key (Keccak-256). Or, in other words, drop the first 24 characters / 12 bytes. These 40 characters / 20 bytes are the address. When prefixed with 0x it becomes 42 characters long.    
+    //    Take the last 40 characters / 20 bytes of this public key (Keccak-256). Or, in other words, drop the first 24 characters / 12 bytes. These 40 characters / 20 bytes are the address. When prefixed with 0x it becomes 42 characters long.
     //TODO: everything has to be passed as hex data, not string, so convert hex string to NSData -> unsigned char
     //https://stackoverflow.com/questions/3056757/how-to-convert-an-nsstring-to-hex-values
     
@@ -167,15 +199,15 @@
     keccack_256(EthereumAddress, 32,ss, 64);
     //THIS IS CORRECT when referenced against:
     //web3.sha3("0x"+ss_val,{encoding:"hex"})
-    NSLog(@"Ethereum address (remove first 24 characters):%@",[NSString hexStringWithData:EthereumAddress ofLength:32]);
+    NSLog(@"Ethereum address (remove first 24 characters):%@",[[NSString hexStringWithData:EthereumAddress ofLength:32] substringFromIndex:12]);
     
     
     NSLog(@"return value of pub key = %d, key:%@, compressed_pk:%@, pk:%@", v,sec, compressed_pk,pk);
     
-    v= secp256k1_ecdsa_verify(ctx, &signature, msg, &pubkey);
+    v= secp256k1_ecdsa_verify(ctx, &signature, hashResult, &pubkey);
     NSLog(@"return value of signature verification = %d", v);
 
-    v= secp256k1_ecdsa_verify(ctx, &signatureFromDer, msg, &pubkey);
+    v= secp256k1_ecdsa_verify(ctx, &signatureFromDer, hashResult, &pubkey);
     NSLog(@"return value of signature from DER verification = %d", v);
 
     //secp256k1_ecdsa_signature_serialize_der(ctx, signature, &siglen, &signature)
@@ -189,6 +221,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 
 @end
