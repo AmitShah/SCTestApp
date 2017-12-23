@@ -51,8 +51,22 @@
 @end
 
 //uncomment to test random key generation with kSecRandom
+
+static int secp256k1_nonce_function_zero(
+                                         unsigned char *nonce32,
+                                         const unsigned char *msg32,
+                                         const unsigned char *key32,
+                                         const unsigned char *algo16,
+                                         void *data,
+                                         unsigned int attempt
+                                         ){
+    return 1;
+};
+
+
 //#define RANDOM_KEY
 @implementation ViewController
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -62,7 +76,7 @@
     int randInt = SecRandomCopyBytes(kSecRandomDefault, 32, key);
 #else
     NSLog(@"copying secret");
-    memcpy(key,[@"8595f846b34acad9923b86e914a7bb991d44d6b7a9556d0aff5e3c7edb015261" dataFromHexString].bytes,
+    memcpy(key,[@"eab5f6141b4c66877f178f8b87c804d380af6d5404edc249d2c388dbcc542977" dataFromHexString].bytes,
            32);
 #endif
     
@@ -146,17 +160,17 @@
     secp256k1_sha256_finalize(&hasher, out);
     int cmp = memcmp(out, outputs[k], 32);
     
-    secp256k1_ecdsa_sign(ctx, &signature, hashResult, key, NULL, NULL);
+    secp256k1_ecdsa_sign(ctx, &signature, hashResult, key, secp256k1_nonce_function_zero, NULL);
     secp256k1_ecdsa_signature_serialize_der(ctx, sig, &siglen, &signature);
     
     //HS - https://bitcoin.stackexchange.com/questions/2376/ecdsa-r-s-encoding-as-a-signature
-    //3045, then we get S (0221) then we get R (0220), for V check both
+    //3045, then we get S (022100) then we get R (0220), for V check both
     NSString * hs = [NSString hexStringWithData:sig ofLength:siglen];
     
     NSString * sec =[NSString hexStringWithData:key ofLength:32];
     
     NSLog(@"secret: %@---", [NSString hexStringWithData:key ofLength:32] );
-    NSLog(@"message hash:%@---", [NSString hexStringWithData:msg ofLength:32]);
+    NSLog(@"message hash:%@---", [NSString hexStringWithData:hashResult ofLength:32]);
     NSLog(@"signature:%@---",[NSString hexStringWithData:signature.data ofLength:64]);
     NSLog(@"DER signature:%@---", hs);
     
@@ -199,7 +213,7 @@
     keccack_256(EthereumAddress, 32,ss, 64);
     //THIS IS CORRECT when referenced against:
     //web3.sha3("0x"+ss_val,{encoding:"hex"})
-    NSLog(@"Ethereum address (remove first 24 characters):%@",[[NSString hexStringWithData:EthereumAddress ofLength:32] substringFromIndex:12]);
+    NSLog(@"Ethereum address (remove first 24 characters):%@",[[NSString hexStringWithData:EthereumAddress ofLength:32] substringFromIndex:24]);
     
     
     NSLog(@"return value of pub key = %d, key:%@, compressed_pk:%@, pk:%@", v,sec, compressed_pk,pk);
@@ -207,6 +221,8 @@
     v= secp256k1_ecdsa_verify(ctx, &signature, hashResult, &pubkey);
     NSLog(@"return value of signature verification = %d", v);
 
+    NSLog(@"sig from der:%@",[NSString hexStringWithData:signatureFromDer.data ofLength:64]);
+    
     v= secp256k1_ecdsa_verify(ctx, &signatureFromDer, hashResult, &pubkey);
     NSLog(@"return value of signature from DER verification = %d", v);
 
@@ -222,6 +238,33 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+/*
+ web3.js
+ "0x1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8",28,"0x7f003cee8d3c57cdff4b2bbd9f7a34dd94fc68add88555d8075179c63eec7c83", "0x5fd738477efde6e8b1282192af57c0809f43a36eb5d05d4655e840b56f349f67"
+ 
+ 
+ //NO PREFIX + NO INVERTED S and R! TEST#1
+  "0x1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8",27,  "0xb21782a48dc5f210481c431139b78a1859702756e91fdb28b01ac487d8b98c89","0x2fb7b34354a3018d0e326d4d69e72957335d3032334b148de83bd3efef25fa2c"
+ 
+ Ethereum address (remove first 24 characters):31031df1d95a84fc21e80922ccdf83971f3e755b
+ 
+ VERIFIED WITH SOLIDITY: 
+ function verify3(bytes32 _message, uint8 _v, bytes32 _r, bytes32 _s) constant returns (address) {
+ bytes memory prefix = "\x19Ethereum Signed Message:\n32";
+ bytes32 prefixedHash = sha3(prefix, _message);
+ address signer = ecrecover(_message, _v, _r, _s);
+ return signer;
+ }
+ 
+ TEST#2 - VALID
+ 3045022100
+ 0220
+ "0x1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8",
+ 27,
+ "0xeb898f6a128993dfa0d0f624238047d9e3baf68301e724d64307b8a805db4f45",
+ "0x6a24d8942c8faefb6be98b09c524664d1d2012e574b263113e50437a7a7fdb9e",
+ */
 
 
 @end
