@@ -1,0 +1,44 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "D138022C6A1323FC50C2C3A04E693615EBCCAA7F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "D138022C6A1323FC50C2C3A04E693615EBCCAA7F" : 9223372036854775807,
+    "E70BAA23FFF6FC6D0B3CA7D094C2C3140FBEBE6B" : 9223372036854775807,
+    "452527D39E01A16F07A68AA8F89A4B93368C5BC5" : 9223372036854775807,
+    "3DA1D6D46C66BE443E999EA5BFB53D38EE660B2B" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "B152D8C0-1E23-4260-9221-B7446052AA16",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "D138022C6A1323FC50C2C3A04E693615EBCCAA7F" : "Secp256k1-Test\/",
+    "E70BAA23FFF6FC6D0B3CA7D094C2C3140FBEBE6B" : "keccak-tiny\/",
+    "452527D39E01A16F07A68AA8F89A4B93368C5BC5" : "libtommath-master\/",
+    "3DA1D6D46C66BE443E999EA5BFB53D38EE660B2B" : "ios-secp256k1\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Secp256k1-Test",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Secp256k1-Test.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/AmitShah\/ios-secp256k1.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "3DA1D6D46C66BE443E999EA5BFB53D38EE660B2B"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/AmitShah\/libtommath.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "452527D39E01A16F07A68AA8F89A4B93368C5BC5"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/AmitShah\/SCTestApp.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "D138022C6A1323FC50C2C3A04E693615EBCCAA7F"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/AmitShah\/keccak-tiny.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E70BAA23FFF6FC6D0B3CA7D094C2C3140FBEBE6B"
+    }
+  ]
+}

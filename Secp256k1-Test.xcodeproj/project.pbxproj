@@ -18,6 +18,11 @@
 		3F29B5981FE204C9004BEF48 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F29B5961FE204C9004BEF48 /* LaunchScreen.storyboard */; };
 		3F29B5A31FE204C9004BEF48 /* Secp256k1_TestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F29B5A21FE204C9004BEF48 /* Secp256k1_TestTests.m */; };
 		3F29B5AE1FE204C9004BEF48 /* Secp256k1_TestUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F29B5AD1FE204C9004BEF48 /* Secp256k1_TestUITests.m */; };
+		3F42870C1FFB74960072A9D3 /* Verify.sol in Resources */ = {isa = PBXBuildFile; fileRef = 3F42870B1FFB74960072A9D3 /* Verify.sol */; };
+		3F4287131FFD7D3C0072A9D3 /* Transaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4287121FFD7D3C0072A9D3 /* Transaction.m */; };
+		3F4287221FFDB7080072A9D3 /* libtommath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F4287211FFDB7080072A9D3 /* libtommath.a */; };
+		3F4287261FFEB00F0072A9D3 /* Contract.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4287251FFEB00F0072A9D3 /* Contract.m */; };
+		3F428729200289550072A9D3 /* RLPSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F428728200289550072A9D3 /* RLPSerialization.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +62,14 @@
 		3F29B5A91FE204C9004BEF48 /* Secp256k1-TestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Secp256k1-TestUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F29B5AD1FE204C9004BEF48 /* Secp256k1_TestUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Secp256k1_TestUITests.m; sourceTree = "<group>"; };
 		3F29B5AF1FE204C9004BEF48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3F42870B1FFB74960072A9D3 /* Verify.sol */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Verify.sol; sourceTree = "<group>"; };
+		3F4287111FFD7D3C0072A9D3 /* Transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transaction.h; sourceTree = "<group>"; };
+		3F4287121FFD7D3C0072A9D3 /* Transaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Transaction.m; sourceTree = "<group>"; };
+		3F4287211FFDB7080072A9D3 /* libtommath.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtommath.a; path = ../libtommath/build/libtommath.a; sourceTree = "<group>"; };
+		3F4287241FFEB00F0072A9D3 /* Contract.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contract.h; sourceTree = "<group>"; };
+		3F4287251FFEB00F0072A9D3 /* Contract.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Contract.m; sourceTree = "<group>"; };
+		3F428727200289550072A9D3 /* RLPSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLPSerialization.h; sourceTree = "<group>"; };
+		3F428728200289550072A9D3 /* RLPSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLPSerialization.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,8 +77,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F2550381FE3CB71007B3648 /* keccak-tiny-unrolled.o in Frameworks */,
+				3F4287221FFDB7080072A9D3 /* libtommath.a in Frameworks */,
 				3F2550361FE3CB64007B3648 /* secp256k1.framework in Frameworks */,
+				3F2550381FE3CB71007B3648 /* keccak-tiny-unrolled.o in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,9 +100,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F2550391FF623AE007B3648 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				3F428727200289550072A9D3 /* RLPSerialization.h */,
+				3F428728200289550072A9D3 /* RLPSerialization.m */,
+				3F4287111FFD7D3C0072A9D3 /* Transaction.h */,
+				3F4287121FFD7D3C0072A9D3 /* Transaction.m */,
+				3F4287241FFEB00F0072A9D3 /* Contract.h */,
+				3F4287251FFEB00F0072A9D3 /* Contract.m */,
+			);
+			name = Util;
+			sourceTree = "<group>";
+		};
 		3F29B5791FE204C7004BEF48 = {
 			isa = PBXGroup;
 			children = (
+				3F4287091FFB74630072A9D3 /* Ethereum */,
 				3F29B5841FE204C8004BEF48 /* Secp256k1-Test */,
 				3F29B5A11FE204C9004BEF48 /* Secp256k1-TestTests */,
 				3F29B5AC1FE204C9004BEF48 /* Secp256k1-TestUITests */,
@@ -110,6 +138,7 @@
 		3F29B5841FE204C8004BEF48 /* Secp256k1-Test */ = {
 			isa = PBXGroup;
 			children = (
+				3F2550391FF623AE007B3648 /* Util */,
 				3F29B5881FE204C8004BEF48 /* AppDelegate.h */,
 				3F29B5891FE204C8004BEF48 /* AppDelegate.m */,
 				3F29B58B1FE204C8004BEF48 /* ViewController.h */,
@@ -153,10 +182,27 @@
 		3F29B5BB1FE20502004BEF48 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3F4287211FFDB7080072A9D3 /* libtommath.a */,
 				3F2550371FE3CB71007B3648 /* keccak-tiny-unrolled.o */,
 				3F2550351FE3CB64007B3648 /* secp256k1.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3F4287091FFB74630072A9D3 /* Ethereum */ = {
+			isa = PBXGroup;
+			children = (
+				3F42870A1FFB74710072A9D3 /* Contracts */,
+			);
+			name = Ethereum;
+			sourceTree = "<group>";
+		};
+		3F42870A1FFB74710072A9D3 /* Contracts */ = {
+			isa = PBXGroup;
+			children = (
+				3F42870B1FFB74960072A9D3 /* Verify.sol */,
+			);
+			name = Contracts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,6 +215,7 @@
 				3F29B57E1FE204C8004BEF48 /* Sources */,
 				3F29B57F1FE204C8004BEF48 /* Frameworks */,
 				3F29B5801FE204C8004BEF48 /* Resources */,
+				3F42870D1FFB755D0072A9D3 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -271,6 +318,7 @@
 				3F29B5981FE204C9004BEF48 /* LaunchScreen.storyboard in Resources */,
 				3F29B5951FE204C9004BEF48 /* Assets.xcassets in Resources */,
 				3F29B5901FE204C8004BEF48 /* Main.storyboard in Resources */,
+				3F42870C1FFB74960072A9D3 /* Verify.sol in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,14 +338,33 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		3F42870D1FFB755D0072A9D3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		3F29B57E1FE204C8004BEF48 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				3F29B58D1FE204C8004BEF48 /* ViewController.m in Sources */,
+				3F428729200289550072A9D3 /* RLPSerialization.m in Sources */,
 				3F29B58A1FE204C8004BEF48 /* AppDelegate.m in Sources */,
 				3F29B5931FE204C9004BEF48 /* Secp256k1_Test.xcdatamodeld in Sources */,
+				3F4287261FFEB00F0072A9D3 /* Contract.m in Sources */,
+				3F4287131FFD7D3C0072A9D3 /* Transaction.m in Sources */,
 				3F29B5871FE204C8004BEF48 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -444,16 +511,28 @@
 		3F29B5B31FE204C9004BEF48 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = VV98CR2VYJ;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "/Users/amitshah/Documents/iphone/ios-secp256k1/framework/**";
+				FRAMEWORK_SEARCH_PATHS = (
+					"/Users/amitshah/Documents/iphone/ios-secp256k1/framework/**",
+					"/Users/amitshah/Documents/iphone/libtommath/build/**",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"/Users/amitshah/Documents/iphone/keccak-tiny/**",
+					"/Users/amitshah/Documents/iphone/libtommath/**",
 					"/Users/amitshah/Documents/iphone/ios-secp256k1/src/**",
 				);
 				INFOPLIST_FILE = "Secp256k1-Test/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "/Users/amitshah/Documents/iphone/libtommath/build/**";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "crowdsparq.Secp256k1-Test";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -462,11 +541,20 @@
 		3F29B5B41FE204C9004BEF48 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = VV98CR2VYJ;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"/Users/amitshah/Documents/iphone/ios-secp256k1/framework/**",
+					"/Users/amitshah/Documents/iphone/libtommath/build/**",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "Secp256k1-Test/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "/Users/amitshah/Documents/iphone/libtommath/build/**";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "crowdsparq.Secp256k1-Test";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

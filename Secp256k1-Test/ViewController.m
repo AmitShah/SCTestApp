@@ -14,6 +14,9 @@
 #import <hash_impl.h>
 #import <keccak-tiny.h>
 
+#import "Transaction.h"
+#import "tommath.h"
+
 @implementation NSString (Hex)
 
 + (NSString*) hexStringWithData: (unsigned char*) data ofLength: (NSUInteger) len
@@ -70,6 +73,67 @@ static int secp256k1_nonce_function_zero(
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+   
+//    
+//    mp_int gas;
+//    mp_init(&gas);
+//    mp_set(&gas, 10000);
+//    NSData* c = convertMPInt(gas);
+//    const char *bytes1 = [c bytes];
+//    for (int i = 0; i < [c length]; i++)
+//    {
+//        NSLog(@"%d", (unsigned char)bytes1[i]);
+//    }
+    
+//    NSLog(@"%@", c);
+//    
+//    NSString * dd = [NSString hexStringWithData:c.bytes ofLength:c.length];
+
+    Transaction* t = [[Transaction alloc] init];
+    mp_int gasLimit;
+    mp_init(&gasLimit);
+    mp_set(&gasLimit, 1000);
+    t.gasLimit = gasLimit;
+    
+    mp_int gasPrice;
+    mp_init(&gasPrice);
+    mp_set(&gasPrice, 100);
+    t.gasPrice = gasPrice;
+    
+    mp_int nonce;
+    mp_init(&nonce);
+    mp_set(&nonce, 1);
+    t.nonce = nonce;
+    
+    mp_int value;
+    mp_init(&value);
+    mp_set(&value, 120);
+    t.value = value;
+    
+    uint8_t * address = (uint8_t*)[@"1f36f546477cda21bf2296c50976f2740247906f" dataFromHexString].bytes;
+    
+    t.toAddress = address;
+
+    
+    NSData * d = [t serialize];
+    NSData * transactionEncoding = [t signSerialize];
+    const char *bytes = [d bytes];
+//    for (int i = 0; i < [d length]; i++)
+//    {
+//        NSLog(@"%d", (unsigned char)bytes[i]);
+//    }
+    NSLog(@"%@",[NSString hexStringWithData:transactionEncoding.bytes ofLength:transactionEncoding.length]);
+    
+    uint8_t hashedTransaction[32];
+    
+    //TODO for signing we set chainId = 0, we only need the first 6 params (no r,s,v) -> keccak hash -> sign 
+    keccack_256(hashedTransaction, 32, (uint8_t*)transactionEncoding.bytes , transactionEncoding.length);
+    
+    NSLog(@"%@", [NSString hexStringWithData:hashedTransaction ofLength:32]);
+    
+    
+    
+    
     unsigned char key[32];
 #ifdef RANDOM_KEY
     NSLog(@"generating random secret");
@@ -266,7 +330,7 @@ static int secp256k1_nonce_function_zero(
  "0x6a24d8942c8faefb6be98b09c524664d1d2012e574b263113e50437a7a7fdb9e",
  
  
- TEST#3 TEST VALID for DER 3044 protocol 
+ TEST#3 TEST VALID for DER 3044 protocol
  
  secret: 8595f846b34acad9923b86e914a7bb991d44d6b7a9556d0aff5e3c7edb015261---
  message hash:1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8---
@@ -280,7 +344,15 @@ static int secp256k1_nonce_function_zero(
  
  Solidity Params:
 
- "0x1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8",  27,  "0x5f0dbf89ece9f2f6c7e8923f6f9f3f68c4e651a452f575ce27565d26804fc8f2" ,"0x1a3a8fddd22367bd1e77b777499dfd625049c2aa7345ad36fb3764150d7d34f9"
+ "0x1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8",  27,  "0x5f0dbf89ece9f2f6c7e8923f6f9f3f68c4e651a452f575ce27565d26804fc8f2" ,
+     "0x1a3a8fddd22367bd1e77b777499dfd625049c2aa7345ad36fb3764150d7d34f9"
+ 
+ 
+ 
+ 3045
+ 022100
+ "0x1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8",  27,  "0xe7ff81822519aac101acbc44af69b2772315a291f1970096e3406b9355d14b4e",
+     "0x053fa6f38dcc4084a0cb5b9cd4957c6b5188abc3021d069cae17ab1edd7e773c"
  */
 
 
