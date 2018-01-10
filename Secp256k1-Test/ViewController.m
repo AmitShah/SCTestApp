@@ -54,20 +54,15 @@
 @end
 
 //uncomment to test random key generation with kSecRandom
-
-static int secp256k1_nonce_function_zero(
-                                         unsigned char *nonce32,
-                                         const unsigned char *msg32,
-                                         const unsigned char *key32,
-                                         const unsigned char *algo16,
-                                         void *data,
-                                         unsigned int attempt
-                                         ){
-    return 1;
-};
-
-
 //#define RANDOM_KEY
+
+//TODO, we want to wrap this to change our nonce on demand
+static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned char *msg32, const unsigned char *key32, const unsigned char *algo16, void *data, unsigned int counter){
+
+    return secp256k1_nonce_function_rfc6979(nonce32, msg32, key32, algo16, data, counter);
+}
+
+
 @implementation ViewController
 
 
@@ -102,7 +97,7 @@ static int secp256k1_nonce_function_zero(
     
     mp_int nonce;
     mp_init(&nonce);
-    mp_set(&nonce, 1);
+    mp_set(&nonce, 2);
     t.nonce = nonce;
     
     mp_int value;
@@ -140,7 +135,7 @@ static int secp256k1_nonce_function_zero(
     int randInt = SecRandomCopyBytes(kSecRandomDefault, 32, key);
 #else
     NSLog(@"copying secret");
-    memcpy(key,[@"eab5f6141b4c66877f178f8b87c804d380af6d5404edc249d2c388dbcc542977" dataFromHexString].bytes,
+    memcpy(key,[@"e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109" dataFromHexString].bytes,
            32);
 #endif
     
@@ -224,7 +219,8 @@ static int secp256k1_nonce_function_zero(
     secp256k1_sha256_finalize(&hasher, out);
     int cmp = memcmp(out, outputs[k], 32);
     
-    secp256k1_ecdsa_sign(ctx, &signature, hashResult, key, secp256k1_nonce_function_zero, NULL);
+    //TODO: properly Creating your own nonce generation function?
+    secp256k1_ecdsa_sign(ctx, &signature, hashedTransaction, key, custom_nonce_function_rfc6979, NULL);
     secp256k1_ecdsa_signature_serialize_der(ctx, sig, &siglen, &signature);
     
     //HS - https://bitcoin.stackexchange.com/questions/2376/ecdsa-r-s-encoding-as-a-signature
@@ -234,7 +230,7 @@ static int secp256k1_nonce_function_zero(
     NSString * sec =[NSString hexStringWithData:key ofLength:32];
     
     NSLog(@"secret: %@---", [NSString hexStringWithData:key ofLength:32] );
-    NSLog(@"message hash:%@---", [NSString hexStringWithData:hashResult ofLength:32]);
+    NSLog(@"message hash:%@---", [NSString hexStringWithData:hashedTransaction ofLength:32]);
     NSLog(@"signature:%@---",[NSString hexStringWithData:signature.data ofLength:64]);
     NSLog(@"DER signature:%@---", hs);
     
