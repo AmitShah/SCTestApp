@@ -1,5 +1,5 @@
 //
-//  NSObject+Transaction.h
+//  Transaction.h
 //  Secp256k1-Test
 //
 //  Created by Amit Shah on 2018-01-03.
@@ -81,6 +81,7 @@ static NSData *dataWithByte(unsigned char value) {
 }
 
 @interface Transaction : NSObject
+
 @property (nonatomic, assign) mp_int nonce;
 
 @property (nonatomic,assign) mp_int gasPrice;
@@ -90,15 +91,15 @@ static NSData *dataWithByte(unsigned char value) {
 @property (nonatomic, assign) mp_int value;
 @property (nonatomic, assign, nullable) uint8_t* data;
 
-@property (nonatomic, assign, nullable) uint8_t *r;
-@property (nonatomic, assign, nullable) uint8_t *s;
+@property (nonatomic, assign, nullable) char *r;
+@property (nonatomic, assign, nullable) char *s;
 @property (nonatomic, assign) uint8_t v;
 
 @property (nonatomic, assign, nullable) uint8_t *fromAddress;
 
 @property (nonatomic, assign) ChainId chainId;
 
-- (nonnull NSData*)serialize;
+- (nonnull NSData*)serialize:(bool) _signature;
 
 - (nonnull NSData*)signSerialize;
 

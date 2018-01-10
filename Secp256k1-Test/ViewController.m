@@ -14,6 +14,7 @@
 #import <hash_impl.h>
 #import <keccak-tiny.h>
 
+
 #import "Transaction.h"
 #import "tommath.h"
 
@@ -69,20 +70,6 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
 - (void)viewDidLoad {
     [super viewDidLoad];
    
-//    
-//    mp_int gas;
-//    mp_init(&gas);
-//    mp_set(&gas, 10000);
-//    NSData* c = convertMPInt(gas);
-//    const char *bytes1 = [c bytes];
-//    for (int i = 0; i < [c length]; i++)
-//    {
-//        NSLog(@"%d", (unsigned char)bytes1[i]);
-//    }
-    
-//    NSLog(@"%@", c);
-//    
-//    NSString * dd = [NSString hexStringWithData:c.bytes ofLength:c.length];
 
     Transaction* t = [[Transaction alloc] init];
     mp_int gasLimit;
@@ -110,13 +97,10 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     t.toAddress = address;
 
     
-    NSData * d = [t serialize];
+    //NSData * d = [t serialize];
     NSData * transactionEncoding = [t signSerialize];
-    const char *bytes = [d bytes];
-//    for (int i = 0; i < [d length]; i++)
-//    {
-//        NSLog(@"%d", (unsigned char)bytes[i]);
-//    }
+    //const char *bytes = [d bytes];
+
     NSLog(@"%@",[NSString hexStringWithData:transactionEncoding.bytes ofLength:transactionEncoding.length]);
     
     uint8_t hashedTransaction[32];
@@ -219,9 +203,36 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     secp256k1_sha256_finalize(&hasher, out);
     int cmp = memcmp(out, outputs[k], 32);
     
-    //TODO: properly Creating your own nonce generation function?
+   
     secp256k1_ecdsa_sign(ctx, &signature, hashedTransaction, key, custom_nonce_function_rfc6979, NULL);
     secp256k1_ecdsa_signature_serialize_der(ctx, sig, &siglen, &signature);
+    
+    uint8_t r[32];
+    uint8_t s[32];
+    
+    der_sig_parse(r,s, sig, siglen);
+    
+    
+//    t.s = &s[0] ;
+//    t.r = &r[0] ;
+    
+    t.s = &s[0];
+    t.r = &r[0];
+    
+    NSLog(@"SIG R: %@---", [NSString hexStringWithData:t.r ofLength:32] );
+    NSLog(@"SIG S: %@---", [NSString hexStringWithData:t.s ofLength:32] );
+    
+    NSData * d = [t serialize: true];
+    const char *bytes = [d bytes];
+    
+    NSLog(@"hashed signed transaction:%@----",[NSString hexStringWithData:d.bytes ofLength:d.length]);
+    
+    
+   
+    
+    
+    
+    
     
     //HS - https://bitcoin.stackexchange.com/questions/2376/ecdsa-r-s-encoding-as-a-signature
     //3045, then we get S (022100) then we get R (0220), for V check both
@@ -233,6 +244,11 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     NSLog(@"message hash:%@---", [NSString hexStringWithData:hashedTransaction ofLength:32]);
     NSLog(@"signature:%@---",[NSString hexStringWithData:signature.data ofLength:64]);
     NSLog(@"DER signature:%@---", hs);
+    
+    //TODO:https://blog.engelke.com/2014/10/17/parsing-ber-and-der-encoded-asn-1-objects/
+    
+    
+    
     
     secp256k1_ecdsa_signature_parse_der(ctx, &signatureFromDer, sig, siglen);
     
@@ -351,5 +367,137 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
      "0x053fa6f38dcc4084a0cb5b9cd4957c6b5188abc3021d069cae17ab1edd7e773c"
  */
 
+//DER signature parser from https://github.com/bitcoin-core/secp256k1/blob/0b7024185045a49a1a6a4c5615bf31c94f63d9c4/src/ecdsa_impl.h
+
+static int der_sig_parse(char *rr, char *rs, const unsigned char *sig, size_t size) {
+    const unsigned char *sigend = sig + size;
+    int rlen;
+    if (sig == sigend || *(sig++) != 0x30) {
+        /* The encoding doesn't start with a constructed sequence (X.690-0207 8.9.1). */
+        return 0;
+    }
+    rlen = secp256k1_der_read_len(&sig, sigend);
+    if (rlen < 0 || sig + rlen > sigend) {
+        /* Tuple exceeds bounds */
+        return 0;
+    }
+    if (sig + rlen != sigend) {
+        /* Garbage after tuple. */
+        return 0;
+    }
+    
+    if (!secp256k1_der_parse_integer(rr, &sig, sigend)) {
+        return 0;
+    }
+    if (!secp256k1_der_parse_integer(rs, &sig, sigend)) {
+        return 0;
+    }
+    
+    if (sig != sigend) {
+        /* Trailing garbage inside tuple. */
+        return 0;
+    }
+    
+    return 1;
+}
+
+static int secp256k1_der_parse_integer(char *r, const unsigned char **sig, const unsigned char *sigend) {
+    int overflow = 0;
+    unsigned char ra[32] = {0};
+    int rlen;
+    
+    if (*sig == sigend || **sig != 0x02) {
+        /* Not a primitive integer (X.690-0207 8.3.1). */
+        return 0;
+    }
+    (*sig)++;
+    rlen = secp256k1_der_read_len(sig, sigend);
+    if (rlen <= 0 || (*sig) + rlen > sigend) {
+        /* Exceeds bounds or not at least length 1 (X.690-0207 8.3.1).  */
+        return 0;
+    }
+    if (**sig == 0x00 && rlen > 1 && (((*sig)[1]) & 0x80) == 0x00) {
+        /* Excessive 0x00 padding. */
+        return 0;
+    }
+    if (**sig == 0xFF && rlen > 1 && (((*sig)[1]) & 0x80) == 0x80) {
+        /* Excessive 0xFF padding. */
+        return 0;
+    }
+    if ((**sig & 0x80) == 0x80) {
+        /* Negative. */
+        overflow = 1;
+    }
+    while (rlen > 0 && **sig == 0) {
+        /* Skip leading zero bytes */
+        rlen--;
+        (*sig)++;
+    }
+    if (rlen > 32) {
+        overflow = 1;
+    }
+    if (!overflow) {
+        memcpy(ra + 32 - rlen, *sig, rlen);
+        
+        //secp256k1_scalar_set_b32(r, ra, &overflow);
+    }
+    if (overflow) {
+        //secp256k1_scalar_set_int(r, 0);
+    }
+    (*sig) += rlen;
+    
+    memcpy(r,ra,rlen);
+    return 1;
+}
+
+static int secp256k1_der_read_len(const unsigned char **sigp, const unsigned char *sigend) {
+    int lenleft, b1;
+    size_t ret = 0;
+    if (*sigp >= sigend) {
+        return -1;
+    }
+    b1 = *((*sigp)++);
+    if (b1 == 0xFF) {
+        /* X.690-0207 8.1.3.5.c the value 0xFF shall not be used. */
+        return -1;
+    }
+    if ((b1 & 0x80) == 0) {
+        /* X.690-0207 8.1.3.4 short form length octets */
+        return b1;
+    }
+    if (b1 == 0x80) {
+        /* Indefinite length is not allowed in DER. */
+        return -1;
+    }
+    /* X.690-207 8.1.3.5 long form length octets */
+    lenleft = b1 & 0x7F;
+    if (lenleft > sigend - *sigp) {
+        return -1;
+    }
+    if (**sigp == 0) {
+        /* Not the shortest possible length encoding. */
+        return -1;
+    }
+    if ((size_t)lenleft > sizeof(size_t)) {
+        /* The resulting length would exceed the range of a size_t, so
+         * certainly longer than the passed array size.
+         */
+        return -1;
+    }
+    while (lenleft > 0) {
+        ret = (ret << 8) | **sigp;
+        if (ret + lenleft > (size_t)(sigend - *sigp)) {
+            /* Result exceeds the length of the passed array. */
+            return -1;
+        }
+        (*sigp)++;
+        lenleft--;
+    }
+    if (ret < 128) {
+        /* Not the shortest possible length encoding. */
+        return -1;
+    }
+    return ret;
+}
 
 @end

@@ -1,5 +1,5 @@
 //
-//  NSObject+Transaction.m
+//  Transaction.m
 //  Secp256k1-Test
 //
 //  Created by Amit Shah on 2018-01-03.
@@ -97,17 +97,18 @@ static NSData *NullData = nil;
     return [RLPSerialization dataWithObject:raw error:nil];
 }
 
-- (NSData*)serialize {
+- (NSData*)serialize: (bool) _signature {
     NSMutableArray *raw = [self _packBasic];
     
-//    if (_signature) {
-//        uint8_t v = 27 + self.signature.v;
-//        if (_chainId) { v += _chainId * 2 + 8; }
-//        [raw addObject:dataWithByte(v)];
-//        [raw addObject:stripDataZeros(self.signature.r)];
-//        [raw addObject:stripDataZeros(self.signature.s)];
-//        
-//    } else
+    if (_signature) {
+        uint8_t v = 28;
+        if (_chainId) { v += _chainId * 2 + 8; }
+        [raw addObject:dataWithByte(v)];
+        [raw addObject:stripDataZeros([NSData dataWithBytes:_r length:32])];
+        [raw addObject:stripDataZeros([NSData dataWithBytes:_s length:32])];
+        //[raw addObject:stripDataZeros(self.signature.s)];
+        
+    } else
     {
         //EIP115
         [raw addObject:dataWithByte(28)];//[raw addObject:dataWithByte(_chainId ? _chainId: 28)];
