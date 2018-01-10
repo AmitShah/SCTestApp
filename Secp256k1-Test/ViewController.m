@@ -74,12 +74,12 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     Transaction* t = [[Transaction alloc] init];
     mp_int gasLimit;
     mp_init(&gasLimit);
-    mp_set(&gasLimit, 1000);
+    mp_set(&gasLimit, 100000);
     t.gasLimit = gasLimit;
     
     mp_int gasPrice;
     mp_init(&gasPrice);
-    mp_set(&gasPrice, 100);
+    mp_set(&gasPrice, 4700000);
     t.gasPrice = gasPrice;
     
     mp_int nonce;
@@ -92,10 +92,12 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     mp_set(&value, 120);
     t.value = value;
     
+    
+    
     uint8_t * address = (uint8_t*)[@"1f36f546477cda21bf2296c50976f2740247906f" dataFromHexString].bytes;
     
     t.toAddress = address;
-
+    
     
     //NSData * d = [t serialize];
     NSData * transactionEncoding = [t signSerialize];
@@ -225,7 +227,7 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     NSData * d = [t serialize: true];
     const char *bytes = [d bytes];
     
-    NSLog(@"hashed signed transaction:%@----",[NSString hexStringWithData:d.bytes ofLength:d.length]);
+    NSLog(@"hashed signed transaction:web3.eth.sendRawTransaction('%@')----",[NSString hexStringWithData:d.bytes ofLength:d.length]);
     
     
    

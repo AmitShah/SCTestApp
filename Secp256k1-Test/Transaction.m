@@ -101,7 +101,7 @@ static NSData *NullData = nil;
     NSMutableArray *raw = [self _packBasic];
     
     if (_signature) {
-        uint8_t v = 27;
+        uint8_t v = 28;
         //TODO we need to use the proper chainId
         if (_chainId) { v += _chainId * 2 + 8; }
         NSLog(@"CHAIN ID:%d", v);
@@ -115,7 +115,9 @@ static NSData *NullData = nil;
         NSLog(@"CHAIN ID:%d", _chainId);
 
         //EIP115
-        [raw addObject:dataWithByte(_chainId ? _chainId: 27)];
+        //This identifies which network this singed transaction is valid for.  27 is any so
+        //MAD DANGER
+        [raw addObject:dataWithByte(_chainId ? _chainId: 28)];
         [raw addObject:[NSNull null]];
         [raw addObject:[NSNull null]];
     }
