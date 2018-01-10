@@ -101,8 +101,10 @@ static NSData *NullData = nil;
     NSMutableArray *raw = [self _packBasic];
     
     if (_signature) {
-        uint8_t v = 28;
+        uint8_t v = 27;
+        //TODO we need to use the proper chainId
         if (_chainId) { v += _chainId * 2 + 8; }
+        NSLog(@"CHAIN ID:%d", v);
         [raw addObject:dataWithByte(v)];
         [raw addObject:stripDataZeros([NSData dataWithBytes:_r length:32])];
         [raw addObject:stripDataZeros([NSData dataWithBytes:_s length:32])];
@@ -110,8 +112,10 @@ static NSData *NullData = nil;
         
     } else
     {
+        NSLog(@"CHAIN ID:%d", _chainId);
+
         //EIP115
-        [raw addObject:dataWithByte(28)];//[raw addObject:dataWithByte(_chainId ? _chainId: 28)];
+        [raw addObject:dataWithByte(_chainId ? _chainId: 27)];
         [raw addObject:[NSNull null]];
         [raw addObject:[NSNull null]];
     }
