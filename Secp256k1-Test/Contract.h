@@ -14,5 +14,6 @@
 
 -(NSData*) encodeSingle: (NSString*) type withArg:(id) arg;
 -(NSData *) rawEncode: (NSArray*) types withVals: (NSArray*) values;
+-(NSData *) getMethodHash: (NSString*) method;
 
 @end

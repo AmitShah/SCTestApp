@@ -79,13 +79,21 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
 //    [
     NSArray* a = @[[NSNumber numberWithInt:12345678],
                      @"Hello World", @"2f3b0c"];
-                            
+    
     NSData * encodedData = [c rawEncode:params withVals:a];
     //Tested against Ethereumjs-abi
     //var k = ethereumjs.ABI.rawEncode(["uint256","string","bytes"], [12345678,"Hello World",[0x2f,0x3b,0x0c]]).toString("hex")
     if ([@"0000000000000000000000000000000000000000000000000000000000bc614e000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000b48656c6c6f20576f726c6400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000032f3b0c0000000000000000000000000000000000000000000000000000000000" isEqualToString:[NSString hexStringWithData:encodedData.bytes ofLength:encodedData.length]]){
         NSLog(@"rawEncode test pass-TRUE- result: %@", [NSString hexStringWithData:encodedData.bytes ofLength:encodedData.length]);
     }
+    
+    NSData * methodHash = [c getMethodHash:@"sam(bytes,bool,uint256[])"];
+    NSString* methodHashString =[NSString hexStringWithData:[methodHash bytes] ofLength:[methodHash length]];
+    
+    if([@"a5643bf2" isEqualToString: methodHashString] ){
+        NSLog(@"method hash test pass- TRUE - result: %@", methodHashString);
+    }
+    
     Transaction* t = [[Transaction alloc] init];
     mp_int gasLimit;
     mp_init(&gasLimit);

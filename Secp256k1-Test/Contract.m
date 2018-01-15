@@ -10,6 +10,8 @@
 #import "tommath.h"
 #import "Transaction.h"
 #import "NSNumber+BigNumber.h"
+#import <keccak-tiny.h>
+
 
 @implementation NSString (Hex)
 
@@ -129,7 +131,12 @@
     return [NSMutableData dataWithLength:size];
 }
 
-
+//first 4 bytes of hash
+-(NSData *) getMethodHash: (NSString*) method{
+    uint8_t hash[32];
+    keccack_256(hash, 32, [method UTF8String] , [method length]);
+    return [NSData dataWithBytes:hash length:4];
+}
 
 //Address passed as NSString with NO 0x prefix
 //bool passed as boolean
@@ -143,7 +150,8 @@
 
 -(NSData*) encodeSingle: (NSString*) type withArg:(id) arg{
     if([type isEqualToString:@"address"]){
-        return [self encodeAddress:(NSString *)arg];
+        return [NSData dataWithData:dataFromChar([(NSString*)arg UTF8String], 32)];
+        
     }
     else if([type isEqualToString:@"bool"]){
         bool t = (Boolean)arg;
@@ -381,10 +389,6 @@
                 
 
 
--(NSData*) getMethodHash:(NSString *) normalizedMethodSignature{
-    //TODO return KECCACK 256 of normalized method signature
-    return nil;
-}
 
 
 
