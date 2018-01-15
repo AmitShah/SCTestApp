@@ -11,4 +11,8 @@
 @interface Contract:NSObject
     @property NSMutableArray *property;
 
+
+-(NSData*) encodeSingle: (NSString*) type withArg:(id) arg;
+-(NSData *) rawEncode: (NSArray*) types withVals: (NSArray*) values;
+
 @end

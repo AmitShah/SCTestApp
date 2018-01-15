@@ -13,7 +13,7 @@
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "D138022C6A1323FC50C2C3A04E693615EBCCAA7F" : "Secp256k1-Test\/",
     "E70BAA23FFF6FC6D0B3CA7D094C2C3140FBEBE6B" : "keccak-tiny\/",
-    "452527D39E01A16F07A68AA8F89A4B93368C5BC5" : "libtommath-master\/",
+    "452527D39E01A16F07A68AA8F89A4B93368C5BC5" : "libtommath\/",
     "3DA1D6D46C66BE443E999EA5BFB53D38EE660B2B" : "ios-secp256k1\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Secp256k1-Test",

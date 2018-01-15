@@ -18,6 +18,7 @@
 		3F29B5981FE204C9004BEF48 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F29B5961FE204C9004BEF48 /* LaunchScreen.storyboard */; };
 		3F29B5A31FE204C9004BEF48 /* Secp256k1_TestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F29B5A21FE204C9004BEF48 /* Secp256k1_TestTests.m */; };
 		3F29B5AE1FE204C9004BEF48 /* Secp256k1_TestUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F29B5AD1FE204C9004BEF48 /* Secp256k1_TestUITests.m */; };
+		3F30E0DA200C05E100946AD4 /* NSNumber+BigNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F30E0D9200C05E100946AD4 /* NSNumber+BigNumber.m */; };
 		3F42870C1FFB74960072A9D3 /* Verify.sol in Resources */ = {isa = PBXBuildFile; fileRef = 3F42870B1FFB74960072A9D3 /* Verify.sol */; };
 		3F4287131FFD7D3C0072A9D3 /* Transaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4287121FFD7D3C0072A9D3 /* Transaction.m */; };
 		3F4287221FFDB7080072A9D3 /* libtommath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F4287211FFDB7080072A9D3 /* libtommath.a */; };
@@ -62,6 +63,8 @@
 		3F29B5A91FE204C9004BEF48 /* Secp256k1-TestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Secp256k1-TestUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F29B5AD1FE204C9004BEF48 /* Secp256k1_TestUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Secp256k1_TestUITests.m; sourceTree = "<group>"; };
 		3F29B5AF1FE204C9004BEF48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3F30E0D8200C05E100946AD4 /* NSNumber+BigNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+BigNumber.h"; sourceTree = "<group>"; };
+		3F30E0D9200C05E100946AD4 /* NSNumber+BigNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+BigNumber.m"; sourceTree = "<group>"; };
 		3F42870B1FFB74960072A9D3 /* Verify.sol */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Verify.sol; sourceTree = "<group>"; };
 		3F4287111FFD7D3C0072A9D3 /* Transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transaction.h; sourceTree = "<group>"; };
 		3F4287121FFD7D3C0072A9D3 /* Transaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Transaction.m; sourceTree = "<group>"; };
@@ -109,6 +112,8 @@
 				3F4287121FFD7D3C0072A9D3 /* Transaction.m */,
 				3F4287241FFEB00F0072A9D3 /* Contract.h */,
 				3F4287251FFEB00F0072A9D3 /* Contract.m */,
+				3F30E0D8200C05E100946AD4 /* NSNumber+BigNumber.h */,
+				3F30E0D9200C05E100946AD4 /* NSNumber+BigNumber.m */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -366,6 +371,7 @@
 				3F4287261FFEB00F0072A9D3 /* Contract.m in Sources */,
 				3F4287131FFD7D3C0072A9D3 /* Transaction.m in Sources */,
 				3F29B5871FE204C8004BEF48 /* main.m in Sources */,
+				3F30E0DA200C05E100946AD4 /* NSNumber+BigNumber.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
