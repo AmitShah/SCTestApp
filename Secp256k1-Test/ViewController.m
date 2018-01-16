@@ -141,8 +141,14 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     
     t.toAddress = address;
     
+    //Transaction Hash Test
+    char txHash[32];
+    NSData * txHashSer = [t serialize:false];
+    keccack_256(txHash, 32, [txHashSer bytes], [txHashSer length]);
+    if([@"f36d958d5e1bb709e1176d2dc7d2340774a9f81d41ea33bdaeecb4f671a5e73a" isEqualToString:[NSString hexStringWithData:txHash ofLength:32]]){
+        NSLog(@"TX HASH Test -PASS- %@", [NSString hexStringWithData:txHash ofLength:32]);
+    }
     
-    //NSData * d = [t serialize];
     NSData * transactionEncoding = [t signSerialize];
     //const char *bytes = [d bytes];
 
