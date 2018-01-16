@@ -89,7 +89,7 @@ static NSData *dataWithByte(unsigned char value) {
 
 @property (nonatomic, assign, nullable) uint8_t* toAddress;
 @property (nonatomic, assign) mp_int value;
-@property (nonatomic, assign, nullable) uint8_t* data;
+@property (nonatomic, assign, nullable) NSData* data;
 
 @property (nonatomic, assign, nullable) char *r;
 @property (nonatomic, assign, nullable) char *s;

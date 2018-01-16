@@ -24,6 +24,8 @@
 		3F4287221FFDB7080072A9D3 /* libtommath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F4287211FFDB7080072A9D3 /* libtommath.a */; };
 		3F4287261FFEB00F0072A9D3 /* Contract.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4287251FFEB00F0072A9D3 /* Contract.m */; };
 		3F428729200289550072A9D3 /* RLPSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F428728200289550072A9D3 /* RLPSerialization.m */; };
+		3FD1693D200EAA9800FD3BD3 /* Verify_sol_Verify.bin in Resources */ = {isa = PBXBuildFile; fileRef = 3FD1693B200EAA9800FD3BD3 /* Verify_sol_Verify.bin */; };
+		3FD1693E200EAA9800FD3BD3 /* Verify_sol_Verify.abi in Resources */ = {isa = PBXBuildFile; fileRef = 3FD1693C200EAA9800FD3BD3 /* Verify_sol_Verify.abi */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +75,8 @@
 		3F4287251FFEB00F0072A9D3 /* Contract.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Contract.m; sourceTree = "<group>"; };
 		3F428727200289550072A9D3 /* RLPSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLPSerialization.h; sourceTree = "<group>"; };
 		3F428728200289550072A9D3 /* RLPSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLPSerialization.m; sourceTree = "<group>"; };
+		3FD1693B200EAA9800FD3BD3 /* Verify_sol_Verify.bin */ = {isa = PBXFileReference; explicitFileType = compiled; path = Verify_sol_Verify.bin; sourceTree = "<group>"; };
+		3FD1693C200EAA9800FD3BD3 /* Verify_sol_Verify.abi */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Verify_sol_Verify.abi; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +209,8 @@
 		3F42870A1FFB74710072A9D3 /* Contracts */ = {
 			isa = PBXGroup;
 			children = (
+				3FD1693B200EAA9800FD3BD3 /* Verify_sol_Verify.bin */,
+				3FD1693C200EAA9800FD3BD3 /* Verify_sol_Verify.abi */,
 				3F42870B1FFB74960072A9D3 /* Verify.sol */,
 			);
 			name = Contracts;
@@ -321,9 +327,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F29B5981FE204C9004BEF48 /* LaunchScreen.storyboard in Resources */,
+				3FD1693E200EAA9800FD3BD3 /* Verify_sol_Verify.abi in Resources */,
 				3F29B5951FE204C9004BEF48 /* Assets.xcassets in Resources */,
 				3F29B5901FE204C8004BEF48 /* Main.storyboard in Resources */,
 				3F42870C1FFB74960072A9D3 /* Verify.sol in Resources */,
+				3FD1693D200EAA9800FD3BD3 /* Verify_sol_Verify.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

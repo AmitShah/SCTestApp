@@ -1,0 +1,1 @@
+[{"constant":true,"inputs":[{"name":"_message","type":"bytes32"},{"name":"_v","type":"uint8"},{"name":"_r","type":"bytes32"},{"name":"_s","type":"bytes32"}],"name":"verify","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"}]

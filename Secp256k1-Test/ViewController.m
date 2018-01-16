@@ -60,6 +60,9 @@
 //uncomment to test random key generation with kSecRandom
 //#define RANDOM_KEY
 
+//uncomment to test creating contract
+//#define CREATE_CONTRACT
+
 //TODO, we want to wrap this to change our nonce on demand
 static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned char *msg32, const unsigned char *key32, const unsigned char *algo16, void *data, unsigned int counter){
 
@@ -127,19 +130,36 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     
     mp_int nonce;
     mp_init(&nonce);
-    mp_set(&nonce, 0);
+    mp_set(&nonce, 6);
     t.nonce = nonce;
     
+    uint8_t * address = (uint8_t*)[@"1f36f546477cda21bf2296c50976f2740247906f" dataFromHexString].bytes;
+
+#ifdef CREATE_CONTRACT
+    mp_int value;
+    mp_init(&value);
+    mp_set(&value, 0);
+    t.value = value;
+    //t.toAddress = address;
+    NSString *filepath = [[NSBundle mainBundle] pathForResource:@"Verify_sol_Verify" ofType:@"bin"];
+    NSError *error;
+    NSData* contractData = [[NSString stringWithContentsOfFile:filepath encoding:NSUTF8StringEncoding error:&error]
+                            dataFromHexString];
+    
+    t.data = contractData;
+    
+
+#else
     mp_int value;
     mp_init(&value);
     mp_set(&value, 1200);
     t.value = value;
-    
-    
-    
-    uint8_t * address = (uint8_t*)[@"1f36f546477cda21bf2296c50976f2740247906f" dataFromHexString].bytes;
-    
     t.toAddress = address;
+
+#endif
+    
+    
+    
     
     //Transaction Hash Test
     char txHash[32];
@@ -279,8 +299,7 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     NSLog(@"hashed signed transaction:web3.eth.sendRawTransaction('%@')----",[NSString hexStringWithData:d.bytes ofLength:d.length]);
     
     
-   
-    
+
     
     
     
@@ -341,6 +360,21 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     //THIS IS CORRECT when referenced against:
     //web3.sha3("0x"+ss_val,{encoding:"hex"})
     NSLog(@"Ethereum address (remove first 24 characters):%@",[[NSString hexStringWithData:EthereumAddress ofLength:32] substringFromIndex:24]);
+    
+#ifdef CREATE_CONTRACT
+//TODO work out this stuff
+//    NSMutableArray * contractAddress = [NSMutableArray arrayWithObjects:[NSData dataWithBytes:EthereumAddress length:20],[NSNumber withBignonce,nil ];
+//    NSData* contractRLP = [RLPSerialization dataWithObject:raw error:nil];
+//    uint8_t hashedContractAddress[32];
+//    
+//    //TODO for signing we set chainId = 0, we only need the first 6 params (no r,s,v) -> keccak hash -> sign
+//    keccack_256(hashedContractAddress, 32, (uint8_t*)rlpRaw.bytes , rlpRaw.length);
+//    NSString* contractAddress = [[NSString hexStringWithData:hashedContractAddress ofLength:32 ] substringFromIndex:24];
+//    //https://ethereum.stackexchange.com/questions/760/how-is-the-address-of-an-ethereum-contract-computed
+//    if([@"343c43a37d37dff08ae8c4a11544c718abb4fcf8" isEqualToString:contractAddress]){
+//        NSLog(@"CONTRACT ADDRESS Test -PASS- %@", [NSString hexStringWithData:hashedContractAddress ofLength:32]);
+//    }
+#endif
     
     
     NSLog(@"return value of pub key = %d, key:%@, compressed_pk:%@, pk:%@", v,sec, compressed_pk,pk);

@@ -84,7 +84,7 @@ static NSData *NullData = nil;
     if (self.data) {
         //TODO
         //[result addObject:[NSData dataWithBytes:self.data length:20]];
-        [result addObject:[NSNull null]];
+        [result addObject:self.data];
     } else {
         [result addObject:[NSNull null]];
     }
