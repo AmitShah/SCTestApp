@@ -19,6 +19,7 @@
 #import "tommath.h"
 #import "Contract.h"
 #import "NSNumber+BigNumber.h"
+#import "RLPSerialization.h"
 
 @implementation NSString (Hex)
 
@@ -93,6 +94,25 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     if([@"a5643bf2" isEqualToString: methodHashString] ){
         NSLog(@"method hash test pass- TRUE - result: %@", methodHashString);
     }
+    
+    
+    //Deterministically calculating a Contracts Address Test
+    NSData *senderAddress = dataFromChar([@"6ac7ea33f8831ea9dcc53393aaa88b25a785dbf0" UTF8String], 40);
+    mp_int testNonce;
+    mp_init_set_int(&testNonce, 1);
+    NSData * testNonceData = convertMPInt(testNonce);
+    NSMutableArray * raw = [NSMutableArray arrayWithObjects:senderAddress,testNonceData,nil ];
+    NSData* rlpRaw = [RLPSerialization dataWithObject:raw error:nil];
+    uint8_t hashedContractAddress[32];
+    
+    //TODO for signing we set chainId = 0, we only need the first 6 params (no r,s,v) -> keccak hash -> sign
+    keccack_256(hashedContractAddress, 32, (uint8_t*)rlpRaw.bytes , rlpRaw.length);
+    NSString* contractAddress = [[NSString hexStringWithData:hashedContractAddress ofLength:32 ] substringFromIndex:24];
+    //https://ethereum.stackexchange.com/questions/760/how-is-the-address-of-an-ethereum-contract-computed
+    if([@"343c43a37d37dff08ae8c4a11544c718abb4fcf8" isEqualToString:contractAddress]){
+        NSLog(@"CONTRACT ADDRESS Test -PASS- %@", [NSString hexStringWithData:hashedContractAddress ofLength:32]);
+    }
+    
     
     Transaction* t = [[Transaction alloc] init];
     mp_int gasLimit;
