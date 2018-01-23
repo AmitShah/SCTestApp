@@ -20,6 +20,7 @@
 #import "Contract.h"
 #import "NSNumber+BigNumber.h"
 #import "RLPSerialization.h"
+#import "MerkleTree.h"
 
 @implementation NSString (Hex)
 
@@ -76,6 +77,22 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
 - (void)viewDidLoad {
     [super viewDidLoad];
    
+    //TEST merkle tree
+    
+    NSMutableArray * merkleElements = [NSMutableArray arrayWithCapacity:100];
+    for(int i=0; i < 10; i++){
+        char meh[32];
+        char* elem = [[NSString stringWithFormat:@"elem%d",i] UTF8String];
+        keccack_256(meh, 32, elem, 5);
+        NSValue * v =[NSValue value:meh withObjCType:@encode(char[32])];
+        [merkleElements addObject:v];
+    }
+    
+    MerkleTree * mt = [[MerkleTree alloc] init:merkleElements];
+    [mt printMerkleTree];
+    
+
+    
     Contract * c = [Contract alloc];
     //NSNumber *n = [NSNumber numberWithUnsignedLongLong:1234929812487291273];
     NSArray* params = @[@"uint256",@"string",@"bytes"];
@@ -130,7 +147,7 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     
     mp_int nonce;
     mp_init(&nonce);
-    mp_set(&nonce, 6);
+    mp_set(&nonce, 0);
     t.nonce = nonce;
     
     uint8_t * address = (uint8_t*)[@"1f36f546477cda21bf2296c50976f2740247906f" dataFromHexString].bytes;
