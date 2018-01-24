@@ -14,8 +14,8 @@
 
 -(nonnull id) init: (NSArray*) _leafNodes{
     self = [super init];
-    
-    self.levels = [NSMutableArray arrayWithCapacity:log2([_leafNodes count])];
+    self.treeHeight =log2([_leafNodes count]);
+    self.levels = [NSMutableArray arrayWithCapacity:self.treeHeight];
     [self.levels addObject:_leafNodes];
     [self generateHashTree];
     return self;
@@ -24,7 +24,6 @@
 
 -(void) generateHashTree{
     NSArray * level = [NSArray arrayWithArray:self.levels[0]];
-    NSMutableArray *result = [NSMutableArray arrayWithCapacity: log2([self.leafNodes count])];
     do{
         //212afc935a5685e12f22195713fac5ba98989c7dda8b0764f5e8256fc1544a075b9972cfef311465c48e55f03a979b661529a5671b939fdd85e842af34650d90
         level = [self sumLevel: level];
@@ -85,6 +84,38 @@
     return result;
 }
 
+-(NSArray*) generateProof:(NSData *)hashedElement withRoot:(NSData *)root{
+    NSMutableArray * result = [NSMutableArray arrayWithCapacity:self.treeHeight];
+    int k =0;
+    //Get the index of the element first
+    for(NSValue* v in self.levels[0]){
+        char hash[32];
+        [v getValue:hash];
+        if(memcmp(hashedElement.bytes,hash,32) ==0 ){
+            break;
+        }
+        k++;
+    }
+    
+    //now go through the layers to make the proof
+    for(NSArray* level in self.levels){
+        NSValue* v = [self _getProofPair:k level:level];
+        if(v){
+            [result addObject:v];
+        }
+        k = floor(k/2);
+    }
+    
+    return result;
+}
+
+-(NSValue*) _getProofPair: (int) index level:(NSArray*) level{
+    int pairIndex = index %2 ==0 ? index -1 : index +1;
+    if(pairIndex < [level count]){
+        return level[pairIndex];
+    }
+    return NULL;
+}
 
 -(void) printMerkleTree{
     int k =0;

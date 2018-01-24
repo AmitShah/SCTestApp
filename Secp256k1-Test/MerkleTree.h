@@ -22,7 +22,7 @@
 
 //generate a merkle proof for the element
 //the element is keccack256 encoded, we send back a list of hops to the root
--(nonnull NSArray*) generateProof:(nonnull NSData*) element withRoot:(nullable NSData*) root;
+-(nonnull NSArray*) generateProof:(NSData*) hashedElement withRoot:(nullable NSData*) root;
 
 -(void) calculateRoot;
 
