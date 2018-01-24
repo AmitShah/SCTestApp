@@ -188,7 +188,11 @@
         [d replaceBytesInRange:NSMakeRange(32-[dataInt length], [dataInt length]) withBytes:dataInt.bytes];
         NSLog(@"%@", [NSString hexStringWithData:[d bytes] ofLength:[d length]]);
         return d;
+    }else if([type hasPrefix:@"bytes"]){
+        NSMutableData * data = [NSMutableData dataWithBytes:[dataFromChar([(NSString*)arg UTF8String], (uint)[(NSString*)arg length] ) bytes] length:32];
         
+        return data;
+    
     }else{
         if([arg isKindOfClass:[NSMutableArray class]] ||[arg isKindOfClass:[NSArray class]] ){
             // This is a nsmutable array
