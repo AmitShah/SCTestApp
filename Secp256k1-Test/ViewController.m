@@ -91,7 +91,10 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     MerkleTree * mt = [[MerkleTree alloc] init:merkleElements];
     [mt printMerkleTree];
     
-
+    char proofElement[32];
+    [merkleElements[9] getValue:proofElement];
+    NSArray* proof = [mt generateProof:[NSData dataWithBytes:proofElement length:32] withRoot:NULL];
+    
     
     Contract * c = [Contract alloc];
     //NSNumber *n = [NSNumber numberWithUnsignedLongLong:1234929812487291273];
@@ -174,8 +177,6 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     t.toAddress = address;
 
 #endif
-    
-    
     
     
     //Transaction Hash Test
@@ -307,6 +308,7 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     t.s = &s[0];
     t.r = &r[0];
     
+    NSLog(@"TRANSACTION HASH: %@---", [NSString hexStringWithData:hashedTransaction ofLength:32] );
     NSLog(@"SIG R: %@---", [NSString hexStringWithData:t.r ofLength:32] );
     NSLog(@"SIG S: %@---", [NSString hexStringWithData:t.s ofLength:32] );
     
@@ -315,12 +317,19 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     
     NSLog(@"hashed signed transaction:web3.eth.sendRawTransaction('%@')----",[NSString hexStringWithData:d.bytes ofLength:d.length]);
     
-    
+    //TEST calling verify method on contract
+    NSLog(@"\r TEST web3.eth.call verify signature, return value in geth should equal 0x000000000000000000000000be862ad9abfe6f22bcb087716c7d89a26051f74c\r");
 
+    NSData* mhash = [c getMethodHash:@"verify(bytes32,uint8,bytes32,bytes32)"];
+    NSArray * verifyParams = @[@"bytes32", @"uint8", @"bytes32", @"bytes32"];
+    NSArray * verifyArgs = @[[NSString hexStringWithData:hashedTransaction ofLength:32], [NSNumber numberWithLong:28],
+                             [NSString hexStringWithData:t.r ofLength:32] ,[NSString hexStringWithData:t.s ofLength:32] ];
+    NSData * verifyData = [c rawEncode:verifyParams withVals:verifyArgs];
+    NSLog(@"web3.eth.call({to:'<CONTRACT_ADDRESS>', data:'%@%@'})",
+          [NSString hexStringWithData:mhash.bytes ofLength:mhash.length],
+          [NSString hexStringWithData:verifyData.bytes ofLength:verifyData.length]);
     
-    
-    
-    
+    NSLog(@"\r\r");
     //HS - https://bitcoin.stackexchange.com/questions/2376/ecdsa-r-s-encoding-as-a-signature
     //3045, then we get S (022100) then we get R (0220), for V check both
     NSString * hs = [NSString hexStringWithData:sig ofLength:siglen];
@@ -601,5 +610,7 @@ static int secp256k1_der_read_len(const unsigned char **sigp, const unsigned cha
     }
     return ret;
 }
+
+
 
 @end
