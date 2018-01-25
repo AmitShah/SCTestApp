@@ -95,6 +95,12 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     [merkleElements[9] getValue:proofElement];
     NSArray* proof = [mt generateProof:[NSData dataWithBytes:proofElement length:32] withRoot:NULL];
     
+    NSLog(@"\r -----------------generated proof---------------- \r");
+    for(NSValue * v in proof){
+        char p[32];
+        [v getValue:p];
+        NSLog(@"proof: %@--\r", [NSString hexStringWithData:p ofLength:32]);
+    }
     
     Contract * c = [Contract alloc];
     //NSNumber *n = [NSNumber numberWithUnsignedLongLong:1234929812487291273];
