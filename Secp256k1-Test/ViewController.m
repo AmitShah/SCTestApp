@@ -200,7 +200,8 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     
     uint8_t hashedTransaction[32];
     
-    //TODO for signing we set chainId = 0, we only need the first 6 params (no r,s,v) -> keccak hash -> sign 
+    //NOTE: for signing we set chainId = 0, we only need the first 6 params (no r,s,v) -> keccak hash -> sign
+    //Therefore, it is not safe to use [Transaction serliaze:false] fos signing purpose! You must use signSerialize
     keccack_256(hashedTransaction, 32, (uint8_t*)transactionEncoding.bytes , transactionEncoding.length);
     
     NSLog(@"%@", [NSString hexStringWithData:hashedTransaction ofLength:32]);
