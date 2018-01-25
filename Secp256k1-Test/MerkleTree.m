@@ -110,7 +110,7 @@
 }
 
 -(NSValue*) _getProofPair: (int) index level:(NSArray*) level{
-    int pairIndex = index %2 ==0 ? index -1 : index +1;
+    int pairIndex = (index+1) %2 ==0 ? index -1 : index +1;
     if(pairIndex < [level count]){
         return level[pairIndex];
     }
