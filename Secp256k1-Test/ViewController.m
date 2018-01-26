@@ -21,6 +21,7 @@
 #import "NSNumber+BigNumber.h"
 #import "RLPSerialization.h"
 #import "MerkleTree.h"
+#import "Ethereum.h"
 
 @implementation NSString (Hex)
 
@@ -76,7 +77,9 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
+    Ethereum * e = [[Ethereum alloc]init];
+    [e testTransaction];
+    //return;
     //TEST merkle tree
     
     NSMutableArray * merkleElements = [NSMutableArray arrayWithCapacity:100];
@@ -156,7 +159,7 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     
     mp_int nonce;
     mp_init(&nonce);
-    mp_set(&nonce, 0);
+    mp_set(&nonce, 6);
     t.nonce = nonce;
     
     uint8_t * address = (uint8_t*)[@"1f36f546477cda21bf2296c50976f2740247906f" dataFromHexString].bytes;
@@ -178,7 +181,7 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
 #else
     mp_int value;
     mp_init(&value);
-    mp_set(&value, 1200);
+    mp_set(&value, 3200);
     t.value = value;
     t.toAddress = address;
 
@@ -299,25 +302,31 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     secp256k1_sha256_finalize(&hasher, out);
     int cmp = memcmp(out, outputs[k], 32);
     
-   
-    secp256k1_ecdsa_sign(ctx, &signature, hashedTransaction, key, custom_nonce_function_rfc6979, NULL);
-    secp256k1_ecdsa_signature_serialize_der(ctx, sig, &siglen, &signature);
+    secp256k1_ecdsa_recoverable_signature recoverable_sig;
     
+    secp256k1_ecdsa_sign_recoverable(ctx, &recoverable_sig, hashedTransaction, key, custom_nonce_function_rfc6979, NULL);
+    
+    
+    secp256k1_ecdsa_recoverable_signature_convert(ctx,
+                                                  &signature,
+                                                  &recoverable_sig);
+    secp256k1_ecdsa_signature_serialize_der(ctx, sig, &siglen, &signature);
     uint8_t r[32];
     uint8_t s[32];
-    
     der_sig_parse(r,s, sig, siglen);
+    //t.s = s;
+    //t.r = r;
     
-    
-//    t.s = &s[0] ;
-//    t.r = &r[0] ;
-    
-    t.s = &s[0];
-    t.r = &r[0];
+    [t setS:&s[0]];
+    [t setR:&r[0]];
+    [t setV:(uint8_t)recoverable_sig.data[64]];
     
     NSLog(@"TRANSACTION HASH: %@---", [NSString hexStringWithData:hashedTransaction ofLength:32] );
-    NSLog(@"SIG R: %@---", [NSString hexStringWithData:t.r ofLength:32] );
-    NSLog(@"SIG S: %@---", [NSString hexStringWithData:t.s ofLength:32] );
+    char _r[32];
+    [t getR:_r];
+    
+    //NSLog(@"SIG R: %@---", [NSString hexStringWithData: _r ofLength:32] );
+    //NSLog(@"SIG S: %@---", [NSString hexStringWithData:_s ofLength:32] );
     
     NSData * d = [t serialize: true];
     const char *bytes = [d bytes];
@@ -329,8 +338,13 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
 
     NSData* mhash = [c getMethodHash:@"verify(bytes32,uint8,bytes32,bytes32)"];
     NSArray * verifyParams = @[@"bytes32", @"uint8", @"bytes32", @"bytes32"];
+    char tempR[32];
+    char tempS[32];
+    [t getR:tempR];
+    [t getS:tempS];
+    
     NSArray * verifyArgs = @[[NSString hexStringWithData:hashedTransaction ofLength:32], [NSNumber numberWithLong:28],
-                             [NSString hexStringWithData:t.r ofLength:32] ,[NSString hexStringWithData:t.s ofLength:32] ];
+                             [NSString hexStringWithData: tempR ofLength:32] ,[NSString hexStringWithData:tempS ofLength:32] ];
     NSData * verifyData = [c rawEncode:verifyParams withVals:verifyArgs];
     NSLog(@"web3.eth.call({to:'<CONTRACT_ADDRESS>', data:'%@%@'})",
           [NSString hexStringWithData:mhash.bytes ofLength:mhash.length],
