@@ -7,7 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <secp256k1.h>
+#import <secp256k1_ecdh.h>
+#import <secp256k1_recovery.h>
+#import <util.h>
+#import <hash_impl.h>
+#import <keccak-tiny.h>
+
+
+#import "Transaction.h"
+#import "tommath.h"
+#import "Contract.h"
+#import "NSNumber+BigNumber.h"
+#import "RLPSerialization.h"
+#import "MerkleTree.h"
 
 @interface Ethereum : NSObject
+- (void)testTransaction;
 
 @end

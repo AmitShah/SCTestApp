@@ -24,6 +24,7 @@
 		3F4287221FFDB7080072A9D3 /* libtommath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F4287211FFDB7080072A9D3 /* libtommath.a */; };
 		3F4287261FFEB00F0072A9D3 /* Contract.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4287251FFEB00F0072A9D3 /* Contract.m */; };
 		3F428729200289550072A9D3 /* RLPSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F428728200289550072A9D3 /* RLPSerialization.m */; };
+		3F6FDAD4201A7D50002FF626 /* Ethereum.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F6FDAD3201A7D50002FF626 /* Ethereum.m */; };
 		3FD1693D200EAA9800FD3BD3 /* Verify_sol_Verify.bin in Resources */ = {isa = PBXBuildFile; fileRef = 3FD1693B200EAA9800FD3BD3 /* Verify_sol_Verify.bin */; };
 		3FD1693E200EAA9800FD3BD3 /* Verify_sol_Verify.abi in Resources */ = {isa = PBXBuildFile; fileRef = 3FD1693C200EAA9800FD3BD3 /* Verify_sol_Verify.abi */; };
 		3FD169A6201674DE00FD3BD3 /* MerkleTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD169A5201674DE00FD3BD3 /* MerkleTree.m */; };
@@ -76,6 +77,8 @@
 		3F4287251FFEB00F0072A9D3 /* Contract.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Contract.m; sourceTree = "<group>"; };
 		3F428727200289550072A9D3 /* RLPSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLPSerialization.h; sourceTree = "<group>"; };
 		3F428728200289550072A9D3 /* RLPSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLPSerialization.m; sourceTree = "<group>"; };
+		3F6FDAD2201A7D50002FF626 /* Ethereum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ethereum.h; sourceTree = "<group>"; };
+		3F6FDAD3201A7D50002FF626 /* Ethereum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Ethereum.m; sourceTree = "<group>"; };
 		3FD1693B200EAA9800FD3BD3 /* Verify_sol_Verify.bin */ = {isa = PBXFileReference; explicitFileType = compiled; path = Verify_sol_Verify.bin; sourceTree = "<group>"; };
 		3FD1693C200EAA9800FD3BD3 /* Verify_sol_Verify.abi */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Verify_sol_Verify.abi; sourceTree = "<group>"; };
 		3FD169A4201674DE00FD3BD3 /* MerkleTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MerkleTree.h; sourceTree = "<group>"; };
@@ -123,6 +126,8 @@
 				3F30E0D9200C05E100946AD4 /* NSNumber+BigNumber.m */,
 				3FD169A4201674DE00FD3BD3 /* MerkleTree.h */,
 				3FD169A5201674DE00FD3BD3 /* MerkleTree.m */,
+				3F6FDAD2201A7D50002FF626 /* Ethereum.h */,
+				3F6FDAD3201A7D50002FF626 /* Ethereum.m */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -383,6 +388,7 @@
 				3F29B5931FE204C9004BEF48 /* Secp256k1_Test.xcdatamodeld in Sources */,
 				3F4287261FFEB00F0072A9D3 /* Contract.m in Sources */,
 				3F4287131FFD7D3C0072A9D3 /* Transaction.m in Sources */,
+				3F6FDAD4201A7D50002FF626 /* Ethereum.m in Sources */,
 				3F29B5871FE204C8004BEF48 /* main.m in Sources */,
 				3FD169A6201674DE00FD3BD3 /* MerkleTree.m in Sources */,
 				3F30E0DA200C05E100946AD4 /* NSNumber+BigNumber.m in Sources */,
