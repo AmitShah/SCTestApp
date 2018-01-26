@@ -12,8 +12,11 @@
 
 static NSData *NullData = nil;
 
-@implementation Transaction
-
+@implementation Transaction{
+    char *r;
+    char *s;
+    uint8_t v;
+}
 
 
 + (void) testBigNumber{
@@ -97,17 +100,57 @@ static NSData *NullData = nil;
     return [RLPSerialization dataWithObject:raw error:nil];
 }
 
+-(void) setS:(char*) _s{
+    if(!s){
+        s = malloc(sizeof(char)*32);
+    }
+    memcpy(s, _s, 32);
+
+}
+
+-(void) setR:(char*) _r{
+    if(!r){
+        r = malloc(sizeof(char) * 32);
+    }
+    memcpy(r,_r,32);
+}
+
+-(void)  getR:(char*) _r{
+    memcpy(_r,r,32);
+}
+
+-(void)  getS:(char*) _s{
+    memcpy(_s,s,32);
+}
+
+-(void) setV:(uint8_t) _v{
+    v = _v;
+}
+
+-(uint8_t) getV{
+    return v;
+}
+-(void)dealloc {
+    if(s){
+        free(s);}
+    if(r){
+        free(r);}
+}
 - (NSData*)serialize: (bool) _signature {
     NSMutableArray *raw = [self _packBasic];
     
     if (_signature) {
-        uint8_t v = 28;
+        //uint8_t v = 28;
+        //TODO: you cant just default to 28, you need to determine based on sig recovery if its 1 or 0 + 27
         //TODO we need to use the proper chainId
-        if (_chainId) { v += _chainId * 2 + 8; }
-        NSLog(@"CHAIN ID:%d", v);
-        [raw addObject:dataWithByte(v)];
-        [raw addObject:stripDataZeros([NSData dataWithBytes:_r length:32])];
-        [raw addObject:stripDataZeros([NSData dataWithBytes:_s length:32])];
+        //if (_chainId) { v += _chainId * 2 + 8; }
+        //NSLog(@"CHAIN ID:%d", v);
+        ;
+        //http://localhost:8080/dist/ethereumjs-vm/node_modules/ethereumjs-tx/node_modules/ethereumjs-util/index.js
+        //line 333
+        [raw addObject:dataWithByte(v + 27)];
+        [raw addObject:stripDataZeros([NSData dataWithBytes:r length:32])];
+        [raw addObject:stripDataZeros([NSData dataWithBytes:s length:32])];
         //[raw addObject:stripDataZeros(self.signature.s)];
         
     } else

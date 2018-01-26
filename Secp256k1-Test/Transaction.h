@@ -91,10 +91,6 @@ static NSData *dataWithByte(unsigned char value) {
 @property (nonatomic, assign) mp_int value;
 @property (nonatomic, assign, nullable) NSData* data;
 
-@property (nonatomic, assign, nullable) char *r;
-@property (nonatomic, assign, nullable) char *s;
-@property (nonatomic, assign) uint8_t v;
-
 @property (nonatomic, assign, nullable) uint8_t *fromAddress;
 
 @property (nonatomic, assign) ChainId chainId;
@@ -102,6 +98,18 @@ static NSData *dataWithByte(unsigned char value) {
 - (nonnull NSData*)serialize:(bool) _signature;
 
 - (nonnull NSData*)signSerialize;
+
+- (void) setS:(char*)_s;
+
+- (void) setR:(char*)_r;
+
+-(void) setV: (uint8_t) _v;
+
+- (void) getS:(char*) _s;
+
+- (void) getR:(char*) _r;
+
+-(uint8_t) getV;
 
 
 @end
