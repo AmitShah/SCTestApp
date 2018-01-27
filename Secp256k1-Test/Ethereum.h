@@ -24,5 +24,7 @@
 
 @interface Ethereum : NSObject
 - (void)testTransaction;
+- (void)testContractCreation;
+- (void)testCall:(NSString*) hexContractAddress;
 
 @end

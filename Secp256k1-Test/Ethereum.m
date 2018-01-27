@@ -40,21 +40,6 @@
 
 - (NSData *)dataFromHexString {
     return dataFromChar([self UTF8String],(int)[self length]  );
-    //    const char *chars = [self UTF8String];
-    //    int i = 0, len = self.length;
-    //
-    //    NSMutableData *data = [NSMutableData dataWithCapacity:len / 2];
-    //    char byteChars[3] = {'\0','\0','\0'};
-    //    unsigned long wholeByte;
-    //
-    //    while (i < len) {
-    //        byteChars[0] = chars[i++];
-    //        byteChars[1] = chars[i++];
-    //        wholeByte = strtoul(byteChars, NULL, 16);
-    //        [data appendBytes:&wholeByte length:1];
-    //    }
-    //    //unsigned char *bytePtr = (unsigned char *)[data bytes];
-    //    return data;
 }
 
 
@@ -67,17 +52,19 @@
 //uncomment to test creating contract
 //#define CREATE_CONTRACT
 
-//TODO, we want to wrap this to change our nonce on demand
 static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned char *msg32, const unsigned char *key32, const unsigned char *algo16, void *data, unsigned int counter){
-    
     return secp256k1_nonce_function_rfc6979(nonce32, msg32, key32, algo16, data, counter);
 }
 
 
-@implementation Ethereum
+@implementation Ethereum{
 
-secp256k1_context * ctx;
-unsigned char key[32];
+    secp256k1_context * ctx;
+    //TODO we should use secure memory for this
+    unsigned char key[32];
+    secp256k1_pubkey pubkey;
+    uint8_t EthereumAddress[32];
+}
 
 -(id) init{
     id obj = [super init];
@@ -87,10 +74,45 @@ unsigned char key[32];
    
     memcpy(key,[@"e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109" dataFromHexString].bytes,
            32);
+    size_t output_size = 65;
+    unsigned char output[65];
+    
+    //get your public key
+    int v = secp256k1_ec_pubkey_create(ctx, &pubkey, key);
+    
+    
+    secp256k1_ec_pubkey_serialize(ctx,
+                                  output,
+                                  &output_size,
+                                  &pubkey,
+                                  SECP256K1_EC_UNCOMPRESSED
+                                  );
+    
+    //https://bitcoin.stackexchange.com/questions/3059/what-is-a-compressed-bitcoin-key
+    //https://brainwalletx.github.io/#generator to validate sec == public key
+    
+    //  Tested in testrpc, take the pk, drop the first byte as that is just a compression flag, run it through keccak_256, drop the first 24 chars, that is your ethereum public address!  web3.sha3("0x9d2727b8e69f0e77fbe15143b163661be815d1ca731be335d53388731a765e7dc55e015815d199104bf9ebe8b59917ac6f573035c0b895006e4aa455f7d9fa97",{encoding:'hex'})
+    
+    //https://ethereum.stackexchange.com/questions/3542/how-are-ethereum-addresses-generated
+    //    Start with the public key (128 characters / 64 bytes)
+    //    Take the Keccak-256 hash of the public key. You should now have a string that is 64 characters / 32 bytes. (note: SHA3-256 eventually became the standard, but Ethereum uses Keccak)
+    //    Take the last 40 characters / 20 bytes of this public key (Keccak-256). Or, in other words, drop the first 24 characters / 12 bytes. These 40 characters / 20 bytes are the address. When prefixed with 0x it becomes 42 characters long.
+    //TODO: everything has to be passed as hex data, not string, so convert hex string to NSData -> unsigned char
+    //https://stackoverflow.com/questions/3056757/how-to-convert-an-nsstring-to-hex-values
+    
+    uint8_t ss[64];
+    memcpy(ss, output+1,64);
+    keccack_256(EthereumAddress, 32,ss, 64);
+    NSLog(@"Ethereum address (remove first 24 characters):%@",[[NSString hexStringWithData:EthereumAddress ofLength:32] substringFromIndex:24]);
+    
     return obj;
     
 }
 
+-(void) signMessage:(NSString *) msg{
+}
+-(void) signDigest:(char*) hash{
+}
 //returns the data parameter, this can be executed directly with eth_call or loaded into a transactions data params
 -(NSData*) encodeMethodForCall:(NSString *) method withParams:(NSArray*) params withArgs:(NSArray*) args{
     Contract *c = [[Contract alloc] init];
@@ -169,7 +191,92 @@ unsigned char key[32];
     //NSLog(@"SIG S: %@---", [NSString hexStringWithData:[t getS] ofLength:32 ]);
     
 }
+- (void)testCall:(NSString*) hexContractAddress {
+    mp_int gasLimit;
+    mp_init(&gasLimit);
+    mp_set(&gasLimit, 210000);
+    
+    mp_int gasPrice;
+    mp_init(&gasPrice);
+    mp_set(&gasPrice, 4700);
+    
+    mp_int nonce;
+    mp_init(&nonce);
+    mp_set(&nonce, 2);
+    
+    mp_int value;
+    mp_init(&value);
+    mp_set(&value, 3200);
+    
+    
+    Transaction* t = [self createTransaction:nonce withGasLimit:gasLimit withGasPrice:gasPrice withValue:value withToAddress:@"1f36f546477cda21bf2296c50976f2740247906f" withData:[NSNull null]];
+    
+    [self signAndSetSignatureFor:t];
+    NSData * tx = [t serialize:true];
 
+    NSData * transactionEncoding = [t signSerialize];
+    //const char *bytes = [d bytes];
+    
+    NSLog(@"%@",[NSString hexStringWithData:transactionEncoding.bytes ofLength:transactionEncoding.length]);
+    
+    uint8_t hashedTransaction[32];
+    
+    //NOTE: for signing we set chainId = 0, we only need the first 6 params (no r,s,v) -> keccak hash -> sign
+    //Therefore, it is not safe to use [Transaction serliaze:false] fos signing purpose! You must use signSerialize
+    keccack_256(hashedTransaction, 32, (uint8_t*)transactionEncoding.bytes , transactionEncoding.length);
+
+    Contract * c = [Contract alloc];
+    NSData* mhash = [c getMethodHash:@"verify(bytes32,uint8,bytes32,bytes32)"];
+    NSArray * verifyParams = @[@"bytes32", @"uint8", @"bytes32", @"bytes32"];
+    char tempR[32];
+    char tempS[32];
+    [t getR:tempR];
+    [t getS:tempS];
+    
+    NSArray * verifyArgs = @[[NSString hexStringWithData:hashedTransaction ofLength:32], [NSNumber numberWithLong:28],
+                             [NSString hexStringWithData: tempR ofLength:32] ,[NSString hexStringWithData:tempS ofLength:32] ];
+    NSData * verifyData = [c rawEncode:verifyParams withVals:verifyArgs];
+    NSLog(@"web3.eth.call({to:'0x%@', data:'%@%@'})",
+    hexContractAddress,
+    [NSString hexStringWithData:mhash.bytes ofLength:mhash.length],
+    [NSString hexStringWithData:verifyData.bytes ofLength:verifyData.length]);
+
+}
+
+-(void) testContractCreation{
+    mp_int gasLimit;
+    mp_init(&gasLimit);
+    mp_set(&gasLimit, 410000);
+    
+    mp_int gasPrice;
+    mp_init(&gasPrice);
+    mp_set(&gasPrice, 4700);
+    
+    mp_int nonce;
+    mp_init(&nonce);
+    mp_set(&nonce, 1);
+    
+    mp_int value;
+    mp_init(&value);
+    mp_set(&value, 0);
+    
+    
+   
+    //t.toAddress = address;
+    NSString *filepath = [[NSBundle mainBundle] pathForResource:@"Verify_sol_Verify" ofType:@"bin"];
+    NSError *error;
+    NSData* contractData = [[NSString stringWithContentsOfFile:filepath encoding:NSUTF8StringEncoding error:&error]
+                            dataFromHexString];
+    
+    Transaction* t = [self createTransaction:nonce withGasLimit:gasLimit withGasPrice:gasPrice withValue:value withToAddress:nil withData:contractData];
+    
+    [self signAndSetSignatureFor:t];
+    NSData * tx = [t serialize:true];
+    
+    NSLog(@"web3.eth.sendRawTransaction('%@')",[NSString hexStringWithData:tx.bytes ofLength:tx.length]);
+    
+
+}
 - (void)testTransaction {
     
 //   
@@ -207,7 +314,7 @@ unsigned char key[32];
     
     mp_int nonce;
     mp_init(&nonce);
-    mp_set(&nonce, 2);
+    mp_set(&nonce, 1);
     
     mp_int value;
     mp_init(&value);
@@ -219,23 +326,13 @@ unsigned char key[32];
     [self signAndSetSignatureFor:t];
     NSData * tx = [t serialize:true];
     
+    NSData * txReceipt = [t serialize:false];
     
+    char txHash[32];
+    keccack_256(txHash, 32, txReceipt.bytes, txReceipt.length);
     
-    NSLog(@"web3.eth.sendRawTransaction('%@')",[NSString hexStringWithData:tx.bytes ofLength:tx.length]);
-        //TEST calling verify method on contract
-    
-//    NSLog(@"\r TEST web3.eth.call verify signature, return value in geth should equal 0x000000000000000000000000be862ad9abfe6f22bcb087716c7d89a26051f74c\r");
-//    
-//    NSData* mhash = [c getMethodHash:@"verify(bytes32,uint8,bytes32,bytes32)"];
-//    NSArray * verifyParams = @[@"bytes32", @"uint8", @"bytes32", @"bytes32"];
-//    NSArray * verifyArgs = @[[NSString hexStringWithData:hashedTransaction ofLength:32], [NSNumber numberWithLong:28],
-//                             [NSString hexStringWithData:t.r ofLength:32] ,[NSString hexStringWithData:t.s ofLength:32] ];
-//    NSData * verifyData = [c rawEncode:verifyParams withVals:verifyArgs];
-//    NSLog(@"web3.eth.call({to:'<CONTRACT_ADDRESS>', data:'%@%@'})",
-//          [NSString hexStringWithData:mhash.bytes ofLength:mhash.length],
-//          [NSString hexStringWithData:verifyData.bytes ofLength:verifyData.length]);
-//    
-//    NSLog(@"\r\r");
+    NSLog(@"web3.eth.sendRawTransaction('0x%@')",[NSString hexStringWithData:tx.bytes ofLength:tx.length]);
+    NSLog(@"web3.eth.getTransactionReceipt('0x%@')",[NSString hexStringWithData:txHash ofLength:32]);
 }
 -(void)dealloc {
     secp256k1_context_destroy(ctx);
