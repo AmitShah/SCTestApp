@@ -27,5 +27,6 @@
 - (void)testContractCreation;
 - (void)testCall:(NSString*) hexContractAddress;
 -(void)testPackSolidity;
+-(void) testSignatureVerification;
 
 @end

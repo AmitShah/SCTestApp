@@ -397,6 +397,42 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     }
 }
 
+-(void) testSignatureVerification{
+    secp256k1_ecdsa_recoverable_signature signature;
+    secp256k1_pubkey pubkey;
+    char msg[32];
+    memcpy(msg, [@"b0d7c4f82e2bde4dd554bcfd9ea6ac1b1ee361ee8b50db9096a481cd29dad207" dataFromHexString].bytes,32);
+    int v = 27; //must be set correctly between 0 and 3
+    char sig[64]; //r and s appended (32 bytes each)
+    memcpy(sig,[@"9ecf61a6692cae53f6ad4e8c77c17b38638339124992bfbf7764b24a3c1ab7a87be4a70eba2af15a8376856330536e42c998bb89809b55bbc9cad7e73bc4fba8" dataFromHexString].bytes,
+           64);
+    
+    secp256k1_ecdsa_recoverable_signature_parse_compact(ctx,&signature,
+                                                        &sig,v-27);
+    secp256k1_ecdsa_recover(ctx,&pubkey,&signature,msg);
+    
+    size_t output_size = 65;
+    unsigned char output[65];
+    
+    secp256k1_ec_pubkey_serialize(ctx,
+                                  output,
+                                  &output_size,
+                                  &pubkey,
+                                  SECP256K1_EC_UNCOMPRESSED
+                                  );
+
+    char address[32];
+    uint8_t ss[64];
+    memcpy(ss, output+1,64);
+
+    keccack_256(address, 32,ss, 64);
+    
+
+    NSString * stringAddress = [[NSString hexStringWithData:address ofLength:32] substringFromIndex:24];
+    if([stringAddress isEqualToString:@"be862ad9abfe6f22bcb087716c7d89a26051f74c"]){
+        NSLog(@"recovered address (remove first 24 characters):%@",stringAddress);
+    }
+}
 
 
 static int der_sig_parse(char *rr, char *rs, const unsigned char *sig, size_t size) {
@@ -529,8 +565,5 @@ static int secp256k1_der_read_len(const unsigned char **sigp, const unsigned cha
     }
     return ret;
 }
-
-
-
 
 @end
