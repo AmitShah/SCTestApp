@@ -84,7 +84,19 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
         }else if([param isEqualToString:@"bool"]){
             //TODO unhandled, user should pass in uint8 value
         }else if([param hasPrefix:@"uint"]){
-            [result appendData:stripDataZeros([(NSNumber*)objects[i] getData])];
+            NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"(\\d+)" options:0 error:NULL];
+            NSArray *matches = [regex matchesInString:param options:0 range:NSMakeRange(0,[param length])];
+            if(matches){
+                NSString *sizeN = [param substringWithRange:[matches[0] range]];
+                NSMutableData* d = [NSMutableData dataWithLength:[sizeN integerValue]/8];
+                NSData* dataInt = [(NSNumber *)objects[i] getData];
+                [d replaceBytesInRange:NSMakeRange([sizeN integerValue]/8-[dataInt length], [dataInt length]) withBytes:dataInt.bytes];
+                [result appendData:d];
+            }
+
+            //need to zerofill size :s
+            //https://github.com/raiden-network/microraiden/blob/master/microraiden/microraiden/utils/crypto.py: line60
+            //[result appendData:stripDataZeros([(NSNumber*)objects[i] getData])];
         }
         i++;
     }
@@ -376,12 +388,11 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
 
 -(void) testPackSolidity{
 
-    NSData * msg = [Ethereum packSolidity:@[@"address",@"uint256"] withArgs:@[@"ca35b7d915458ef540ade6068dfe2f44e8fa733c",[NSNumber numberWithInteger:123]]];
+    NSData * msg = [Ethereum packSolidity:@[@"address",@"uint256",@"string"] withArgs:@[@"ca35b7d915458ef540ade6068dfe2f44e8fa733c",[NSNumber numberWithInteger:123], @"Hello World!"]];
     char hash[32];
     
     keccack_256(&hash, 32, msg.bytes, msg.length);
-    
-    if([[NSString hexStringWithData:hash ofLength:32] isEqualToString:  @"b6ebad627fe36c006201d0e5e23434c71d2c8c56d24ba787c50a09b814c42db8"]){
+    if([[NSString hexStringWithData:hash ofLength:32] isEqualToString:  @"6d2e2055807cc0dd92f42ec7b7d8408a3eb4a24a68f37358e463b44ccb8b3603"]){
         NSLog(@"pass solidity tightly packed hashing test");
     }
 }
