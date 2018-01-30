@@ -9,7 +9,7 @@
 
 
 #import "Ethereum.h"
-
+#import "RLPSerialization.h";
 
 @implementation NSData (NSData_hexadecimalString)
 
@@ -65,6 +65,38 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     secp256k1_pubkey pubkey;
     uint8_t EthereumAddress[32];
 }
+
+//https://ethereum.stackexchange.com/questions/29139/how-does-solidity-tightly-packed-arguments-work-in-sha256
+//address :  [NSString dataFromHex:@"address"]
+//boolean : [NSData appendByte:&value length:1]
+//
++(NSData*) packSolidity:(NSArray*) params withArgs: (NSArray*) objects{
+    NSMutableData * result = [NSMutableData alloc];
+    int i = 0;
+    for(NSString* param in params){
+        
+        if([param hasPrefix:@"bytes"]){
+            [result appendData:objects[i]];
+        }else if([param isEqualToString:@"address"]){
+            [result appendData:[(NSString*)objects[i] dataFromHexString]];
+        }else if([param isEqualToString:@"string"]){
+            [result appendData:[NSData dataWithBytes:[(NSString*)objects[i] UTF8String ] length:[(NSString*)objects[i] length]]];
+        }else if([param isEqualToString:@"bool"]){
+            //TODO unhandled, user should pass in uint8 value
+        }else if([param hasPrefix:@"uint"]){
+            [result appendData:stripDataZeros([(NSNumber*)objects[i] getData])];
+        }
+        i++;
+    }
+    return result;
+
+}
+
+
+
+
+
+
 
 -(id) init{
     id obj = [super init];
@@ -277,31 +309,35 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     
 
 }
-- (void)testTransaction {
+
+-(void) testMerkleProof{
+        NSMutableArray * merkleElements = [NSMutableArray arrayWithCapacity:100];
+        MerkleTree * mt = [[MerkleTree alloc] init:merkleElements];
+        for(int i=0; i < 10; i++){
+            char meh[32];
+            char* elem = [[NSString stringWithFormat:@"elem%d",i] UTF8String];
+            keccack_256(meh, 32, elem, 5);
+            NSValue * v =[NSValue value:meh withObjCType:@encode(char[32])];
+            //[merkleElements addObject:v];
+            [mt appendElement:v];
+        }
+        [mt generateHashTree];
     
-//   
-//    
-//    NSMutableArray * merkleElements = [NSMutableArray arrayWithCapacity:100];
-//    for(int i=0; i < 10; i++){
-//        char meh[32];
-//        char* elem = [[NSString stringWithFormat:@"elem%d",i] UTF8String];
-//        keccack_256(meh, 32, elem, 5);
-//        NSValue * v =[NSValue value:meh withObjCType:@encode(char[32])];
-//        [merkleElements addObject:v];
-//    }
-//    
-//    MerkleTree * mt = [[MerkleTree alloc] init:merkleElements];
-//    [mt printMerkleTree];
-//    char proofElement[32];
-//    [merkleElements[9] getValue:proofElement];
-//    NSArray* proof = [mt generateProof:[NSData dataWithBytes:proofElement length:32] withRoot:NULL];
-//    
-//    NSLog(@"\r -----------------generated proof---------------- \r");
-//    for(NSValue * v in proof){
-//        char p[32];
-//        [v getValue:p];
-//        NSLog(@"proof: %@--\r", [NSString hexStringWithData:p ofLength:32]);
-//    }
+        [mt printMerkleTree];
+        char proofElement[32];
+        [merkleElements[9] getValue:proofElement];
+        NSArray* proof = [mt generateProof:[NSData dataWithBytes:proofElement length:32] withRoot:NULL];
+    
+        NSLog(@"\r -----------------generated proof---------------- \r");
+        for(NSValue * v in proof){
+            char p[32];
+            [v getValue:p];
+            NSLog(@"proof: %@--\r", [NSString hexStringWithData:p ofLength:32]);
+        }
+    
+
+}
+- (void)testTransaction {
     
     
     mp_int gasLimit;
@@ -338,6 +374,17 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     secp256k1_context_destroy(ctx);
 }
 
+-(void) testPackSolidity{
+
+    NSData * msg = [Ethereum packSolidity:@[@"address",@"uint256"] withArgs:@[@"ca35b7d915458ef540ade6068dfe2f44e8fa733c",[NSNumber numberWithInteger:123]]];
+    char hash[32];
+    
+    keccack_256(&hash, 32, msg.bytes, msg.length);
+    
+    if([[NSString hexStringWithData:hash ofLength:32] isEqualToString:  @"b6ebad627fe36c006201d0e5e23434c71d2c8c56d24ba787c50a09b814c42db8"]){
+        NSLog(@"pass solidity tightly packed hashing test");
+    }
+}
 
 
 
