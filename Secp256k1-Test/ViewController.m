@@ -78,7 +78,11 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
 - (void)viewDidLoad {
     [super viewDidLoad];
     Ethereum * e = [[Ethereum alloc]init];
+    [e testSignatureVerification];
+    [e testPackSolidity];
     [e testTransaction];
+    [e testContractCreation];
+    [e testCall:@"622759d1f63bd163a094ea8f2f43c4682484a1f7"];
     //return;
     //TEST merkle tree
     
@@ -310,6 +314,14 @@ static int custom_nonce_function_rfc6979(unsigned char *nonce32, const unsigned 
     secp256k1_ecdsa_recoverable_signature_convert(ctx,
                                                   &signature,
                                                   &recoverable_sig);
+    
+    unsigned char compactRecSig[64];
+    int recid;
+    secp256k1_ecdsa_recoverable_signature_serialize_compact(ctx,&compactRecSig,&recid,&recoverable_sig);
+    
+    
+    NSLog(@"recoverable signature compact form:%@ with %d",[NSString hexStringWithData:compactRecSig ofLength:64],recid);
+    
     secp256k1_ecdsa_signature_serialize_der(ctx, sig, &siglen, &signature);
     uint8_t r[32];
     uint8_t s[32];
